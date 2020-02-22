@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>MG.Posh.Extensions_Core</RootNamespace>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <Company>Yevrag35, LLC.</Company>
+    <Authors>Mike Garvey</Authors>
+    <PackageId>MG.Posh.Extensions.Core</PackageId>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\MG.Posh.Extensions\**\*.cs" Exclude="..\MG.Posh.Extensions\Properties\AssemblyInfo.cs"/>
+	</ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.0.0-rc.3" />
+  </ItemGroup>
+</Project>
