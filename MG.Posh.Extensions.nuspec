@@ -18,7 +18,7 @@
         <dependency id="Microsoft.PowerShell.5.ReferenceAssemblies" version="1.1.0" />
       </group>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Microsoft.PowerShell.SDK" version="7.0.0-rc-3" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.PowerShell.SDK" version="7.0.0-rc.3" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
