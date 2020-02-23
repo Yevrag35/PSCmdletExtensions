@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MG.Posh.Extensions-Core</name>
+    </assembly>
+    <members>
+        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.ContainsParameter``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+                Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
+                the specified member(s).
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> whose BoundParameters are checked.</param>
+            <param name="parameter">The <see cref="T:System.Linq.Expressions.MemberExpression"/> containing the parameter name to check are bound.</param>
+            <returns>Whether the <see cref="T:System.Management.Automation.PSCmdlet"/> contains the specified key.</returns>
+        </member>
+        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.ContainsAllParameters``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
+            <summary>
+                Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
+                all the specified member, returning <see langword="true"/> if all names are present.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> whose BoundParameters are checked.</param>
+            <param name="parameters">The instances of <see cref="T:System.Linq.Expressions.MemberExpression"/> containing the parameters' names to check are bound.</param>
+            <returns>Whether the <see cref="T:System.Management.Automation.PSCmdlet"/> contains all of the specified keys.</returns>
+        </member>
+        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.ContainsAnyParameters``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
+            <summary>
+                Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
+                all the specified members, returning <see langword="true"/> if any of the names are present.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> whose BoundParameters are checked.</param>
+            <param name="parameters">The instances of <see cref="T:System.Linq.Expressions.MemberExpression"/> containing the parameters' names to check are bound.</param>
+            <returns>
+                Returns a <see cref="T:System.Boolean"/> value indicating if
+                the <see cref="T:System.Management.Automation.PSCmdlet"/> contains any of the specified keys.
+            </returns>
+        </member>
+        <member name="M:MG.Posh.Extensions.BoundParameterExtensions.ContainsAllParameters``1(``0,System.String[])">
+            <summary>
+                Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
+                the specified parameter name(s), returning <see langword="true"/> if all are bound.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> whose BoundParameters are checked.</param>
+            <param name="parameterNames">The parameter names to check are bound.</param>
+            <returns>
+                Returns a <see cref="T:System.Boolean"/> value indicating if
+                the <see cref="T:System.Management.Automation.PSCmdlet"/> contains all of the specified keys.
+            </returns>
+        </member>
+        <member name="M:MG.Posh.Extensions.BoundParameterExtensions.ContainsAllParameters``1(``0,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+                Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
+                the specified collection of parameter names, returning <see langword="true"/> if all are bound.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> whose BoundParameters are checked.</param>
+            <param name="parameterNames">The collection of parameter names to check are bound.</param>
+            <returns>
+                Returns a <see cref="T:System.Boolean"/> value indicating if
+                the <see cref="T:System.Management.Automation.PSCmdlet"/> contains all of the specified keys.
+            </returns>
+        </member>
+        <member name="M:MG.Posh.Extensions.BoundParameterExtensions.ContainsAnyParameters``1(``0,System.String[])">
+            <summary>
+                Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
+                the specified parameter name(s), returning <see langword="true"/> if any are bound.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> whose BoundParameters are checked.</param>
+            <param name="parameterNames">The parameter names to check are bound.</param>
+            <returns>
+                Returns a <see cref="T:System.Boolean"/> value indicating if
+                the <see cref="T:System.Management.Automation.PSCmdlet"/> contains any of the specified keys.
+            </returns>
+        </member>
+        <member name="M:MG.Posh.Extensions.BoundParameterExtensions.ContainsAnyParameters``1(``0,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+                Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
+                the specified collection of parameter names, returning <see langword="true"/> if any are bound.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> whose BoundParameters are checked.</param>
+            <param name="parameterNames">The parameter names to check are bound.</param>
+            <returns>
+                Returns a <see cref="T:System.Boolean"/> value indicating if
+                the <see cref="T:System.Management.Automation.PSCmdlet"/> contains any of the specified keys.
+            </returns>
+        </member>
+    </members>
+</doc>
