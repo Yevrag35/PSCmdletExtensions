@@ -37,7 +37,7 @@
                 the <see cref="T:System.Management.Automation.PSCmdlet"/> contains any of the specified keys.
             </returns>
         </member>
-        <member name="M:MG.Posh.Extensions.BoundParameterExtensions.ContainsAllParameters``1(``0,System.String[])">
+        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.ContainsAllParameters``1(``0,System.String[])">
             <summary>
                 Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
                 the specified parameter name(s), returning <see langword="true"/> if all are bound.
@@ -50,7 +50,7 @@
                 the <see cref="T:System.Management.Automation.PSCmdlet"/> contains all of the specified keys.
             </returns>
         </member>
-        <member name="M:MG.Posh.Extensions.BoundParameterExtensions.ContainsAllParameters``1(``0,System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.ContainsAllParameters``1(``0,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
                 Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
                 the specified collection of parameter names, returning <see langword="true"/> if all are bound.
@@ -63,7 +63,7 @@
                 the <see cref="T:System.Management.Automation.PSCmdlet"/> contains all of the specified keys.
             </returns>
         </member>
-        <member name="M:MG.Posh.Extensions.BoundParameterExtensions.ContainsAnyParameters``1(``0,System.String[])">
+        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.ContainsAnyParameters``1(``0,System.String[])">
             <summary>
                 Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
                 the specified parameter name(s), returning <see langword="true"/> if any are bound.
@@ -76,7 +76,7 @@
                 the <see cref="T:System.Management.Automation.PSCmdlet"/> contains any of the specified keys.
             </returns>
         </member>
-        <member name="M:MG.Posh.Extensions.BoundParameterExtensions.ContainsAnyParameters``1(``0,System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.ContainsAnyParameters``1(``0,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
                 Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
                 the specified collection of parameter names, returning <see langword="true"/> if any are bound.

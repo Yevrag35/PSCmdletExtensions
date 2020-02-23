@@ -2,7 +2,7 @@
 using System.Management.Automation;
 using System.Reflection;
 
-namespace MG.Posh.Extensions
+namespace MG.Posh.Extensions.Pipe
 {
     public static class PipedObjectExtensions
     {
