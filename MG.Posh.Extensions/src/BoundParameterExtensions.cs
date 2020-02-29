@@ -6,6 +6,9 @@ using System.Management.Automation;
 
 namespace MG.Posh.Extensions.Bound
 {
+    /// <summary>
+    /// An extension class providing methods for <see cref="PSCmdlet"/> instances to easily check their BoundParameter dictionary.
+    /// </summary>
     public static partial class BoundParameterExtensions
     {
         /// <summary>

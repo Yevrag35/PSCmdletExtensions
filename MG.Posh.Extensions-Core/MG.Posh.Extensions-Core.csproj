@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>MG.Posh.Extensions</RootNamespace>
-    <AssemblyVersion>1.0.2</AssemblyVersion>
-    <FileVersion>1.0.2</FileVersion>
+    <AssemblyVersion>1.0.3</AssemblyVersion>
+    <FileVersion>1.0.3</FileVersion>
     <Company>Yevrag35, LLC.</Company>
     <Authors>Mike Garvey</Authors>
-    <PackageId>MG.Posh.Extensions.Core</PackageId>
-    <Version>1.0.2</Version>
+    <PackageId>MG.Posh.Extensions-Core</PackageId>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
