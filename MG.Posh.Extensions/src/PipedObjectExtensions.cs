@@ -28,25 +28,18 @@ namespace MG.Posh.Extensions.Pipe
         }
 
         /// <summary>
-        ///     Tries to return the object sent to this <see cref="PSCmdlet"/> from the pipeline setting an out variable if
-        ///     one exists.
-        ///     A <see langword="true"/> value indicates there was an object received.
-        ///     A <see langword="false"/> value indicates no object was found or the cmdlet was first in the pipeline.
+        ///     Indicates whether the <see cref="PSCmdlet"/> is receiving an object from the pipeline.
         /// </summary>
         /// <typeparam name="T">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
         /// <param name="cmdlet">The extending <see cref="PSCmdlet"/>.</param>
-        /// <param name="pso">The resulting object found from the pipeline.</param>
         /// <returns>
-        ///     Returns a <see langword="true" /> value if a piped object was retrieved.
-        ///     Returns a <see langword="false"/> value if the resulting piped object was <see langword="null"/>,
-        ///     which usually indicates that this <see cref="PSCmdlet"/> instance's position in the pipeline is
-        ///     less than 2.
+        ///     Returns <see langword="true"/> if the piped object is exists and <see langword="false"/> if the value is <see langword="null"/>.
         /// </returns>
-        public static bool TryGetPipedObject<T>(this T cmdlet, out PSObject pso) where T : PSCmdlet
+        public static bool HasPipedObject<T>(this T cmdlet) where T : PSCmdlet
         {
-            pso = PrivateGet(cmdlet);
-            return pso != null;
+            return GetPipedObjectProperty()?.GetValue(cmdlet) != null;
         }
+
         /// <summary>
         ///     Tries to return the object sent to this <see cref="PSCmdlet"/> from the pipeline setting an out variable if
         ///     one exists.
@@ -55,31 +48,16 @@ namespace MG.Posh.Extensions.Pipe
         /// </summary>
         /// <typeparam name="T">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
         /// <param name="cmdlet">The extending <see cref="PSCmdlet"/>.</param>
-        /// <param name="suppressDebug">Indicates whether to suppress writing to the debug stream.</param>
         /// <param name="pso">The resulting object found from the pipeline.</param>
         /// <returns>
         ///     Returns a <see langword="true" /> value if a piped object was retrieved.
         ///     Returns a <see langword="false"/> value if the resulting piped object was <see langword="null"/>.
         /// </returns>
-        //public static bool TryGetPipedObject<T>(this T cmdlet, bool suppressDebug, out PSObject pso) where T : PSCmdlet
-        //{
-        //    pso = null;
-        //    if (cmdlet.MyInvocation.PipelinePosition > 1)
-        //    {
-        //        if (!suppressDebug)
-        //        {
-        //            cmdlet.WriteDebug(string.Format("Pipeline Position of \"{0}\": {1}", 
-        //                cmdlet.MyInvocation.MyCommand.Name, cmdlet.MyInvocation.PipelinePosition));
-        //        }
-        //        pso = PrivateGet(cmdlet);
-        //    }
-        //    else if (!suppressDebug)
-        //    {
-        //        cmdlet.WriteDebug(string.Format("\"{0}\" is the first command in the pipeline; will not check for piped object.", 
-        //            cmdlet.MyInvocation.MyCommand.Name));
-        //    }
-        //    return pso != null;
-        //}
+        public static bool TryGetPipedObject<T>(this T cmdlet, out PSObject pso) where T : PSCmdlet
+        {
+            pso = PrivateGet(cmdlet);
+            return pso != null;
+        }
 
 
         #region BACKEND METHODS
@@ -87,10 +65,6 @@ namespace MG.Posh.Extensions.Pipe
         private static PSObject PrivateGet<T>(T cmdlet) where T : PSCmdlet
         {
             return GetPipedObjectProperty()?.GetValue(cmdlet) as PSObject;
-        }
-        private static bool PrivateTest<T>(T cmdlet) where T : PSCmdlet
-        {
-            return GetPipedObjectProperty()?.GetValue(cmdlet) != null;
         }
 
         #endregion

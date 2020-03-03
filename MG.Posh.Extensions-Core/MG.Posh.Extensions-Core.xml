@@ -111,6 +111,16 @@
                 The <see cref="T:System.Management.Automation.PSObject"/> instance sent through the pipeline to the extended <see cref="T:System.Management.Automation.PSCmdlet"/>.
             </returns>
         </member>
+        <member name="M:MG.Posh.Extensions.Pipe.PipedObjectExtensions.HasPipedObject``1(``0)">
+            <summary>
+                Indicates whether the <see cref="T:System.Management.Automation.PSCmdlet"/> is receiving an object from the pipeline.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
+            <param name="cmdlet">The extending <see cref="T:System.Management.Automation.PSCmdlet"/>.</param>
+            <returns>
+                Returns <see langword="true"/> if the piped object is exists and <see langword="false"/> if the value is <see langword="null"/>.
+            </returns>
+        </member>
         <member name="M:MG.Posh.Extensions.Pipe.PipedObjectExtensions.TryGetPipedObject``1(``0,System.Management.Automation.PSObject@)">
             <summary>
                 Tries to return the object sent to this <see cref="T:System.Management.Automation.PSCmdlet"/> from the pipeline setting an out variable if
@@ -120,24 +130,6 @@
             </summary>
             <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
             <param name="cmdlet">The extending <see cref="T:System.Management.Automation.PSCmdlet"/>.</param>
-            <param name="pso">The resulting object found from the pipeline.</param>
-            <returns>
-                Returns a <see langword="true" /> value if a piped object was retrieved.
-                Returns a <see langword="false"/> value if the resulting piped object was <see langword="null"/>,
-                which usually indicates that this <see cref="T:System.Management.Automation.PSCmdlet"/> instance's position in the pipeline is
-                less than 2.
-            </returns>
-        </member>
-        <member name="M:MG.Posh.Extensions.Pipe.PipedObjectExtensions.TryGetPipedObject``1(``0,System.Boolean,System.Management.Automation.PSObject@)">
-            <summary>
-                Tries to return the object sent to this <see cref="T:System.Management.Automation.PSCmdlet"/> from the pipeline setting an out variable if
-                one exists.
-                A <see langword="true"/> value indicates there was an object received.
-                A <see langword="false"/> value indicates no object was found or the cmdlet was first in the pipeline.
-            </summary>
-            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
-            <param name="cmdlet">The extending <see cref="T:System.Management.Automation.PSCmdlet"/>.</param>
-            <param name="suppressDebug">Indicates whether to suppress writing to the debug stream.</param>
             <param name="pso">The resulting object found from the pipeline.</param>
             <returns>
                 Returns a <see langword="true" /> value if a piped object was retrieved.
