@@ -44,11 +44,7 @@ namespace MG.Posh.Extensions.Pipe
         /// </returns>
         public static bool TryGetPipedObject<T>(this T cmdlet, out PSObject pso) where T : PSCmdlet
         {
-            pso = null;
-            if (cmdlet.MyInvocation.PipelinePosition > 1)
-            {
-                pso = PrivateGet(cmdlet);
-            }
+            pso = PrivateGet(cmdlet);
             return pso != null;
         }
         /// <summary>
@@ -65,32 +61,38 @@ namespace MG.Posh.Extensions.Pipe
         ///     Returns a <see langword="true" /> value if a piped object was retrieved.
         ///     Returns a <see langword="false"/> value if the resulting piped object was <see langword="null"/>.
         /// </returns>
-        public static bool TryGetPipedObject<T>(this T cmdlet, bool suppressDebug, out PSObject pso) where T : PSCmdlet
-        {
-            pso = null;
-            if (cmdlet.MyInvocation.PipelinePosition > 1)
-            {
-                if (!suppressDebug)
-                {
-                    cmdlet.WriteDebug(string.Format("Pipeline Position of \"{0}\": {1}", 
-                        cmdlet.MyInvocation.MyCommand.Name, cmdlet.MyInvocation.PipelinePosition));
-                }
-                pso = PrivateGet(cmdlet);
-            }
-            else if (!suppressDebug)
-            {
-                cmdlet.WriteDebug(string.Format("\"{0}\" is the first command in the pipeline; will not check for piped object.", 
-                    cmdlet.MyInvocation.MyCommand.Name));
-            }
-            return pso != null;
-        }
+        //public static bool TryGetPipedObject<T>(this T cmdlet, bool suppressDebug, out PSObject pso) where T : PSCmdlet
+        //{
+        //    pso = null;
+        //    if (cmdlet.MyInvocation.PipelinePosition > 1)
+        //    {
+        //        if (!suppressDebug)
+        //        {
+        //            cmdlet.WriteDebug(string.Format("Pipeline Position of \"{0}\": {1}", 
+        //                cmdlet.MyInvocation.MyCommand.Name, cmdlet.MyInvocation.PipelinePosition));
+        //        }
+        //        pso = PrivateGet(cmdlet);
+        //    }
+        //    else if (!suppressDebug)
+        //    {
+        //        cmdlet.WriteDebug(string.Format("\"{0}\" is the first command in the pipeline; will not check for piped object.", 
+        //            cmdlet.MyInvocation.MyCommand.Name));
+        //    }
+        //    return pso != null;
+        //}
 
+
+        #region BACKEND METHODS
+        private static PropertyInfo GetPipedObjectProperty() => typeof(PSCmdlet).GetProperty(PIPE_PROPERTY, NONPUBINST);
         private static PSObject PrivateGet<T>(T cmdlet) where T : PSCmdlet
         {
-            PropertyInfo pipePi = typeof(PSCmdlet)
-                .GetProperty(PIPE_PROPERTY, NONPUBINST);
-
-            return pipePi?.GetValue(cmdlet) as PSObject;
+            return GetPipedObjectProperty()?.GetValue(cmdlet) as PSObject;
         }
+        private static bool PrivateTest<T>(T cmdlet) where T : PSCmdlet
+        {
+            return GetPipedObjectProperty()?.GetValue(cmdlet) != null;
+        }
+
+        #endregion
     }
 }
