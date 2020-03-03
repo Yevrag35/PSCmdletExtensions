@@ -12,6 +12,7 @@ namespace MG.Posh.Extensions.Pipe
     {
         private const BindingFlags NONPUBINST = BindingFlags.Instance | BindingFlags.NonPublic;
         private const string PIPE_PROPERTY = "CurrentPipelineObject";
+        private const string IMMEDIATE_EMPTY = "immediateBaseObjectIsEmpty";
 
         /// <summary>
         ///     Retrieves the object sent to this <see cref="PSCmdlet"/> from the pipeline.  If no object exists,
@@ -37,7 +38,9 @@ namespace MG.Posh.Extensions.Pipe
         /// </returns>
         public static bool HasPipedObject<T>(this T cmdlet) where T : PSCmdlet
         {
-            return GetPipedObjectProperty()?.GetValue(cmdlet) != null;
+            object obj = GetPipedObjectProperty()?.GetValue(cmdlet);
+            FieldInfo empty = GetEmptyField();
+            return empty.GetValue(obj) is bool answer && !answer;
         }
 
         /// <summary>
@@ -56,12 +59,14 @@ namespace MG.Posh.Extensions.Pipe
         public static bool TryGetPipedObject<T>(this T cmdlet, out PSObject pso) where T : PSCmdlet
         {
             pso = PrivateGet(cmdlet);
-            return pso != null;
+            FieldInfo empty = GetEmptyField();
+            return empty.GetValue(pso) is bool answer && !answer;
         }
 
 
         #region BACKEND METHODS
         private static PropertyInfo GetPipedObjectProperty() => typeof(PSCmdlet).GetProperty(PIPE_PROPERTY, NONPUBINST);
+        private static FieldInfo GetEmptyField() => typeof(PSObject).GetField(IMMEDIATE_EMPTY, NONPUBINST);
         private static PSObject PrivateGet<T>(T cmdlet) where T : PSCmdlet
         {
             return GetPipedObjectProperty()?.GetValue(cmdlet) as PSObject;
