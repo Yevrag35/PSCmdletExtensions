@@ -33,8 +33,6 @@
     </ItemGroup>
 	
     <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-	    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.0.0">
-		    <IncludeAssets>compile</IncludeAssets>
-	    </PackageReference>
+	    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.0.0" />
     </ItemGroup>
 </Project>

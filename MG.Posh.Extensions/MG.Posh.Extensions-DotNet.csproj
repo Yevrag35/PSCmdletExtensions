@@ -37,6 +37,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\BoundParameterExtensions-LINQ-Generic.cs" />
     <Compile Include="src\BoundParameterExtensions-LINQ.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\BoundParameterExtensions.cs" />
