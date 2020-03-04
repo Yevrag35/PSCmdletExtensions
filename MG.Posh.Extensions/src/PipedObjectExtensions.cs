@@ -12,7 +12,12 @@ namespace MG.Posh.Extensions.Pipe
     {
         private const BindingFlags NONPUBINST = BindingFlags.Instance | BindingFlags.NonPublic;
         private const string PIPE_PROPERTY = "CurrentPipelineObject";
+
+#if NETFRAMEWORK
         private const string IMMEDIATE_EMPTY = "immediateBaseObjectIsEmpty";
+#else
+        private const string IMMEDIATE_EMPTY = "ImmediateBaseObjectIsEmpty";
+#endif
 
         /// <summary>
         ///     Retrieves the object sent to this <see cref="PSCmdlet"/> from the pipeline.  If no object exists,
@@ -39,8 +44,13 @@ namespace MG.Posh.Extensions.Pipe
         public static bool HasPipedObject<T>(this T cmdlet) where T : PSCmdlet
         {
             object obj = GetPipedObjectProperty()?.GetValue(cmdlet);
-            FieldInfo empty = GetEmptyField();
+#if NETFRAMEWORK
+            FieldInfo empty = GetEmptyField<FieldInfo>();
             return empty.GetValue(obj) is bool answer && !answer;
+#else
+            PropertyInfo empty = GetEmptyField<PropertyInfo>();
+            return empty.GetValue(obj) is bool answer && !answer;
+#endif
         }
 
         /// <summary>
@@ -59,19 +69,31 @@ namespace MG.Posh.Extensions.Pipe
         public static bool TryGetPipedObject<T>(this T cmdlet, out PSObject pso) where T : PSCmdlet
         {
             pso = PrivateGet(cmdlet);
-            FieldInfo empty = GetEmptyField();
+#if NETFRAMEWORK
+            FieldInfo empty = GetEmptyField<FieldInfo>();
             return empty.GetValue(pso) is bool answer && !answer;
+#else
+            PropertyInfo empty = GetEmptyField<PropertyInfo>();
+            return empty.GetValue(pso) is bool answer && !answer;
+#endif
         }
 
 
         #region BACKEND METHODS
         private static PropertyInfo GetPipedObjectProperty() => typeof(PSCmdlet).GetProperty(PIPE_PROPERTY, NONPUBINST);
-        private static FieldInfo GetEmptyField() => typeof(PSObject).GetField(IMMEDIATE_EMPTY, NONPUBINST);
+        private static T GetEmptyField<T>() where T : MemberInfo
+        {
+#if NETFRAMEWORK
+            return typeof(PSObject).GetField(IMMEDIATE_EMPTY, NONPUBINST) as T;
+#else
+            return typeof(PSObject).GetProperty(IMMEDIATE_EMPTY, NONPUBINST) as T;
+#endif
+        }
         private static PSObject PrivateGet<T>(T cmdlet) where T : PSCmdlet
         {
             return GetPipedObjectProperty()?.GetValue(cmdlet) as PSObject;
         }
 
-        #endregion
+#endregion
     }
 }
