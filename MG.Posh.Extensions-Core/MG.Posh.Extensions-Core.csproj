@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>MG.Posh.Extensions</RootNamespace>
     <AssemblyVersion>1.2.0</AssemblyVersion>
     <FileVersion>1.2.0</FileVersion>
@@ -22,9 +22,20 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
-    <ItemGroup>
-	    <Compile Include="..\MG.Posh.Extensions\**\*.cs" Exclude="..\MG.Posh.Extensions\Properties\AssemblyInfo.cs" />
-		<PackageReference Include="Microsoft.PowerShell.SDK" Version="7.0.0"/>
+	<ItemGroup>
+		<Compile Include="..\MG.Posh.Extensions\**\*.cs" Exclude="..\MG.Posh.Extensions\Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+		<PackageReference Include="Microsoft.PowerShell.SDK" Version="6.2.4">
+			<IncludeAssets>compile</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+		<PackageReference Include="Microsoft.PowerShell.SDK" Version="7.0.0">
+			<IncludeAssets>compile</IncludeAssets>
+		</PackageReference>
     </ItemGroup>
 
 </Project>

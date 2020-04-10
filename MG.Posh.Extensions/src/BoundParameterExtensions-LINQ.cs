@@ -55,14 +55,13 @@ namespace MG.Posh.Extensions.Bound
         /// <returns>
         ///     Returns a <see cref="bool"/> value indicating if
         ///     the <see cref="PSCmdlet"/> contains any of the specified keys.
+        ///     If no parameter expressions are specified, then it will return whether or
+        ///     not any parameters have been bound at all.
         /// </returns>
         public static bool ContainsAnyParameters<T>(this T cmdlet, params Expression<Func<T, object>>[] parameters) where T : PSCmdlet
         {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
-
-            else if (parameters.Length <= 0)
-                return false;
+            if (parameters == null || parameters.Length > 0)
+                return cmdlet.MyInvocation.BoundParameters.Count > 0;
 
             return parameters.Any(p => ContainsParameter(cmdlet, p));
         }
