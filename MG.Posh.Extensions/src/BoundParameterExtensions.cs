@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MG.Posh.Extensions.Bound.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -27,13 +28,14 @@ namespace MG.Posh.Extensions.Bound
             if (parameterNames == null || parameterNames.Length <= 0)
                 return false;
 
-            for (int i = 0; i < parameterNames.Length; i++)
-            {
-                string name = parameterNames[i];
-                if (!cmdlet.MyInvocation.BoundParameters.ContainsKey(name))
-                    return false;
-            }
-            return true;
+            return InternalBoundChecker.ContainsAllParameters(cmdlet, parameterNames);
+            //for (int i = 0; i < parameterNames.Length; i++)
+            //{
+            //    string name = parameterNames[i];
+            //    if (!cmdlet.MyInvocation.BoundParameters.ContainsKey(name))
+            //        return false;
+            //}
+            //return true;
         }
         /// <summary>
         ///     Performs a "ContainsKey" lookup on the current <see cref="PSCmdlet.MyInvocation"/> BoundParameters against

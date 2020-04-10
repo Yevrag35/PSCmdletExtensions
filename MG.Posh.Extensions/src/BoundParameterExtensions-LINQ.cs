@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MG.Posh.Extensions.Bound.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -36,13 +37,14 @@ namespace MG.Posh.Extensions.Bound
         /// <returns>Whether the <see cref="PSCmdlet"/> contains all of the specified keys.</returns>
         public static bool ContainsAllParameters<T>(this T cmdlet, params Expression<Func<T, object>>[] parameters) where T : PSCmdlet
         {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
+            return InternalBoundChecker.ContainsAllParameters(cmdlet, InternalBoundChecker.GetMemberNames(parameters));
+            //if (parameters == null)
+            //    throw new ArgumentNullException("parameters");
 
-            else if (parameters.Length <= 0)
-                return false;
+            //else if (parameters.Length <= 0)
+            //    return false;
 
-            return parameters.All(p => ContainsParameter(cmdlet, p));
+            //return parameters.All(p => ContainsParameter(cmdlet, p));
         }
 
         /// <summary>
