@@ -39,6 +39,10 @@ namespace MG.Posh.Extensions.Bound.Internal
                     {
                         yield return unExMem.Member.Name;
                     }
+                    else
+                    {
+                        throw new InvalidBoundExpressionException();
+                    }
                 }
             }
         }

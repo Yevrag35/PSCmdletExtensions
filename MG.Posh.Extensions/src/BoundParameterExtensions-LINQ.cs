@@ -17,14 +17,15 @@ namespace MG.Posh.Extensions.Bound
         /// <param name="cmdlet">The <see cref="PSCmdlet"/> whose BoundParameters are checked.</param>
         /// <param name="parameter">The <see cref="MemberExpression"/> containing the parameter name to check are bound.</param>
         /// <returns>Whether the <see cref="PSCmdlet"/> contains the specified key.</returns>
-        public static bool ContainsParameter<T>(this T cmdlet, Expression<Func<T, object>> parameter) where T : PSCmdlet
+        public static bool ContainsParameter<T1, T2>(this T1 cmdlet, Expression<Func<T1, T2>> parameter) where T1 : PSCmdlet
         {
-            bool result = false;
-            if (TryAsMemberExpression(parameter, out MemberExpression memEx))
-            {
-                result = cmdlet.MyInvocation.BoundParameters.ContainsKey(memEx.Member.Name);
-            }
-            return result;
+            return InternalBoundChecker.ContainsAllParameters(cmdlet, InternalBoundChecker.GetMemberNames(parameter));
+            //bool result = false;
+            //if (TryAsMemberExpression(parameter, out MemberExpression memEx))
+            //{
+            //    result = cmdlet.MyInvocation.BoundParameters.ContainsKey(memEx.Member.Name);
+            //}
+            //return result;
         }
 
         /// <summary>
