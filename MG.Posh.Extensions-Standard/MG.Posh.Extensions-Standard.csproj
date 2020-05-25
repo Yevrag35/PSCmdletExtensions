@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>MG.Posh.Extensions</RootNamespace>
+    <Version>1.2.1</Version>
+    <Company>Yevrag35, LLC.</Company>
+    <Authors>Mike Garvey</Authors>
+    <AssemblyVersion>1.2.1</AssemblyVersion>
+    <FileVersion>1.2.1</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>E:\Local_Repos\MG.Posh.Extensions\MG.Posh.Extensions-Standard\MG.Posh.Extensions-Standard.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\MG.Posh.Extensions\**\*.cs" Exclude="..\MG.Posh.Extensions\Properties\AssemblyInfo.cs;..\MG.Posh.Extensions\bin\**\*.*;..\MG.Posh.Extensions\obj\**\*.*;..\MG.Posh.Extensions\notfinished\**\*.*" />
+	</ItemGroup>
+
+</Project>

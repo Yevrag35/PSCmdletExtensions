@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>MG.Posh.Extensions-Core</name>
+        <name>MG.Posh.Extensions-Standard</name>
     </assembly>
     <members>
         <member name="T:MG.Posh.Extensions.Bound.BoundBuiltinParameterExtensions">
