@@ -37,10 +37,10 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\BoundParameterExtensions-BuiltIn.cs" />
-    <Compile Include="src\BoundParameterExtensions-LINQ.cs" />
+    <Compile Include="bound\BoundParameterExtensions-BuiltIn.cs" />
+    <Compile Include="bound\BoundParameterExtensions-LINQ.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\BoundParameterExtensions.cs" />
+    <Compile Include="bound\BoundParameterExtensions.cs" />
     <None Include="notfinished\PipedObjectExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +48,9 @@
       <Version>1.1.0</Version>
       <IncludeAssets>compile</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="writes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
