@@ -13,7 +13,7 @@ namespace MG.Posh.Extensions.Bound
         ///     the specified member(s).
         /// </summary>
         /// <typeparam name="T">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
-        /// <param name="cmdlet">The <see cref="PSCmdlet"/> whose BoundParameters are checked.</param>
+        /// <param name="cmdlet">The <see cref="PSCmdlet"/> that the method is extending.</param>
         /// <param name="parameter">The <see cref="MemberExpression"/> containing the parameter name to check are bound.</param>
         /// <returns>Whether the <see cref="PSCmdlet"/> contains the specified key.</returns>
         public static bool ContainsParameter<T>(this T cmdlet, Expression<Func<T, object>> parameter) where T : PSCmdlet
@@ -31,7 +31,7 @@ namespace MG.Posh.Extensions.Bound
         ///     all the specified member, returning <see langword="true"/> if all names are present.
         /// </summary>
         /// <typeparam name="T">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
-        /// <param name="cmdlet">The <see cref="PSCmdlet"/> whose BoundParameters are checked.</param>
+        /// <param name="cmdlet">The <see cref="PSCmdlet"/> that the method is extending.</param>
         /// <param name="parameters">The instances of <see cref="MemberExpression"/> containing the parameters' names to check are bound.</param>
         /// <returns>Whether the <see cref="PSCmdlet"/> contains all of the specified keys.</returns>
         public static bool ContainsAllParameters<T>(this T cmdlet, params Expression<Func<T, object>>[] parameters) where T : PSCmdlet
@@ -50,7 +50,7 @@ namespace MG.Posh.Extensions.Bound
         ///     all the specified members, returning <see langword="true"/> if any of the names are present.
         /// </summary>
         /// <typeparam name="T">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
-        /// <param name="cmdlet">The <see cref="PSCmdlet"/> whose BoundParameters are checked.</param>
+        /// <param name="cmdlet">The <see cref="PSCmdlet"/> that the method is extending.</param>
         /// <param name="parameters">The instances of <see cref="MemberExpression"/> containing the parameters' names to check are bound.</param>
         /// <returns>
         ///     Returns a <see cref="bool"/> value indicating if

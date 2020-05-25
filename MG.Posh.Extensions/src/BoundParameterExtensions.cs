@@ -16,7 +16,7 @@ namespace MG.Posh.Extensions.Bound
         ///     the specified parameter name(s), returning <see langword="true"/> if all are bound.
         /// </summary>
         /// <typeparam name="T">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
-        /// <param name="cmdlet">The <see cref="PSCmdlet"/> whose BoundParameters are checked.</param>
+        /// <param name="cmdlet">The <see cref="PSCmdlet"/> that the method is extending.</param>
         /// <param name="parameterNames">The parameter names to check are bound.</param>
         /// <returns>
         ///     Returns a <see cref="bool"/> value indicating if
@@ -40,7 +40,7 @@ namespace MG.Posh.Extensions.Bound
         ///     the specified collection of parameter names, returning <see langword="true"/> if all are bound.
         /// </summary>
         /// <typeparam name="T">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
-        /// <param name="cmdlet">The <see cref="PSCmdlet"/> whose BoundParameters are checked.</param>
+        /// <param name="cmdlet">The <see cref="PSCmdlet"/> that the method is extending.</param>
         /// <param name="parameterNames">The collection of parameter names to check are bound.</param>
         /// <returns>
         ///     Returns a <see cref="bool"/> value indicating if
@@ -59,7 +59,7 @@ namespace MG.Posh.Extensions.Bound
         ///     the specified parameter name(s), returning <see langword="true"/> if any are bound.
         /// </summary>
         /// <typeparam name="T">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
-        /// <param name="cmdlet">The <see cref="PSCmdlet"/> whose BoundParameters are checked.</param>
+        /// <param name="cmdlet">The <see cref="PSCmdlet"/> that the method is extending.</param>
         /// <param name="parameterNames">The parameter names to check are bound.  This argument can be <see cref="null"/>.</param>
         /// <returns>
         ///     Returns a <see cref="bool"/> value indicating if
@@ -85,7 +85,7 @@ namespace MG.Posh.Extensions.Bound
         ///     the specified collection of parameter names, returning <see langword="true"/> if any are bound.
         /// </summary>
         /// <typeparam name="T">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
-        /// <param name="cmdlet">The <see cref="PSCmdlet"/> whose BoundParameters are checked.</param>
+        /// <param name="cmdlet">The <see cref="PSCmdlet"/> that the method is extending.</param>
         /// <param name="parameterNames">The parameter names to check are bound.</param>
         /// <returns>
         ///     Returns a <see cref="bool"/> value indicating if
