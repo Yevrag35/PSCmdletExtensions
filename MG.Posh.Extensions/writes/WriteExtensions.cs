@@ -25,27 +25,12 @@ namespace MG.Posh.Extensions.Writes
         /// <exception cref="FormatException"/>
         /// <exception cref="InvalidOperationException"/>
         /// <exception cref="PipelineStoppedException"/>
-        public static void WriteDebugFormat<T>(T cmdlet, string formattedText, params object[] arguments) where T : Cmdlet
+        public static void WriteDebugFormat<T>(this T cmdlet, string formattedText, params object[] arguments) where T : Cmdlet
         {
             if (string.IsNullOrWhiteSpace(formattedText))
                 return;
 
             cmdlet.WriteDebug(StringFormatter.FormatString(formattedText, arguments));
-        }
-
-        /// <summary>
-        /// Writes the specifed message as an <see cref="ArgumentException"/> to the error pipe.
-        /// </summary>
-        /// <typeparam name="T">The type of the inheriting <see cref="Cmdlet"/>.</typeparam>
-        /// <param name="cmdlet">The <see cref="Cmdlet"/> the method is extending.</param>
-        /// <param name="message">The message of the <see cref="ArgumentException"/>.</param>
-        /// <param name="category">The category that best describes the error.</param>
-        /// <exception cref="InvalidOperationException"/>
-        /// <exception cref="PipelineStoppedException"/>
-        public static void WriteArgumentError<T>(T cmdlet, string message, ErrorCategory category) where T : Cmdlet
-        {
-            var errRec = new ErrorRecord(new ArgumentException(message), typeof(ArgumentException).FullName, category, null);
-            cmdlet.WriteError(errRec);
         }
 
         /// <summary>
@@ -59,7 +44,7 @@ namespace MG.Posh.Extensions.Writes
         /// This is optional.</param>
         /// <exception cref="InvalidOperationException"/>
         /// <exception cref="PipelineStoppedException"/>
-        public static void WriteArgumentError<T>(T cmdlet, string message, ErrorCategory category, object targetObject) where T : Cmdlet
+        public static void WriteArgumentError<T>(this T cmdlet, string message, ErrorCategory category, object targetObject = null) where T : Cmdlet
         {
             var errRec = new ErrorRecord(new ArgumentException(message), typeof(ArgumentException).FullName, category, targetObject);
             cmdlet.WriteError(errRec);
@@ -68,18 +53,41 @@ namespace MG.Posh.Extensions.Writes
         /// <summary>
         /// Writes the specified message into the given <see cref="Exception"/> type provided all to the error pipe.
         /// </summary>
-        /// <typeparam name="T1">The type of the inheriting <see cref="Cmdlet"/>.</typeparam>
-        /// <typeparam name="T2">The type of exception to create in the <see cref="ErrorRecord"/>.</typeparam>
+        /// <remarks><typeparamref name="T1"/> should have a public constructor that accepts a string (message) parameter.</remarks>
+        /// <typeparam name="T2">The type of the inheriting <see cref="Cmdlet"/>.</typeparam>
+        /// <typeparam name="T1">The type of exception to create in the <see cref="ErrorRecord"/>.</typeparam>
         /// <param name="cmdlet">The <see cref="Cmdlet"/> the method is extending.</param>
         /// <param name="message">The message of the <see cref="Exception"/>.</param>
         /// <param name="category">The category that best describes the error.</param>
         /// <param name="targetObject">This is the object against which the <see cref="Cmdlet"/> or provider was operating on when the error occurred.</param>
         /// <exception cref="InvalidOperationException"/>
         /// <exception cref="PipelineStoppedException"/>
-        public static void WriteError<T1, T2>(T1 cmdlet, string message, ErrorCategory category, object targetObject) 
-            where T1 : Cmdlet where T2 : Exception
+        public static void WriteError<T1, T2>(this T2 cmdlet, string message, ErrorCategory category, object targetObject = null) 
+            where T1 : Exception where T2 : Cmdlet
         {
-            Exception ex = (Exception)Activator.CreateInstance(typeof(T2), message);
+            Exception ex = (Exception)Activator.CreateInstance(typeof(T1), message);
+            var errRec = new ErrorRecord(ex, ex.GetType().FullName, category, targetObject);
+            cmdlet.WriteError(errRec);
+        }
+
+        /// <summary>
+        /// Writes the specified message into the given <see cref="Exception"/> type provided all to the error pipe.
+        /// </summary>
+        /// <remarks><typeparamref name="T1"/> should have a public constructor that accepts a string (message) parameter.</remarks>
+        /// <typeparam name="T2">The type of the inheriting <see cref="Cmdlet"/>.</typeparam>
+        /// <typeparam name="T1">The type of exception to create in the <see cref="ErrorRecord"/>.</typeparam>
+        /// <param name="cmdlet">The <see cref="Cmdlet"/> the method is extending.</param>
+        /// <param name="message">The message of the <see cref="Exception"/>.</param>
+        /// <param name="category">The category that best describes the error.</param>
+        /// <param name="targetObject">This is the object against which the <see cref="Cmdlet"/> or provider was operating on when the error occurred.</param>
+        /// <exception cref="InvalidOperationException"/>
+        /// <exception cref="PipelineStoppedException"/>
+        public static void WriteError<T>(this T cmdlet, string message, Type exceptionType, ErrorCategory category, object targetObject = null) where T : Cmdlet
+        {
+            if (!typeof(Exception).IsAssignableFrom(exceptionType))
+                throw new InvalidCastException(string.Format("The type \"System.Exception\" is not assignable from the type \"{0}\"", exceptionType.FullName));
+
+            Exception ex = (Exception)Activator.CreateInstance(exceptionType, message);
             var errRec = new ErrorRecord(ex, ex.GetType().FullName, category, targetObject);
             cmdlet.WriteError(errRec);
         }
@@ -99,7 +107,7 @@ namespace MG.Posh.Extensions.Writes
         /// <exception cref="FormatException"/>
         /// <exception cref="InvalidOperationException"/>
         /// <exception cref="PipelineStoppedException"/>
-        public static void WriteVerboseFormat<T>(T cmdlet, string formattedText, params object[] arguments) where T : Cmdlet
+        public static void WriteVerboseFormat<T>(this T cmdlet, string formattedText, params object[] arguments) where T : Cmdlet
         {
             if (string.IsNullOrWhiteSpace(formattedText))
                 return;
@@ -121,7 +129,7 @@ namespace MG.Posh.Extensions.Writes
         /// <param name="arguments">The object(s) to format.</param>
         /// <exception cref="FormatException"/>
         /// <exception cref="PipelineStoppedException"/>
-        public static void WriteWarningFormat<T>(T cmdlet, string formattedText, params object[] arguments) where T : Cmdlet
+        public static void WriteWarningFormat<T>(this T cmdlet, string formattedText, params object[] arguments) where T : Cmdlet
         {
             if (string.IsNullOrWhiteSpace(formattedText))
                 return;
@@ -139,7 +147,7 @@ namespace MG.Posh.Extensions.Writes
         /// <param name="enumerateCollection">Indicates whether the object will be enumerated as its sent.</param>
         /// <exception cref="InvalidOperationException"/>
         /// <exception cref="PipelineStoppedException"/>
-        public static void WriteToPipeline<T>(T cmdlet, object @object, bool enumerateCollection = true) where T : Cmdlet
+        public static void WriteToPipeline<T>(this T cmdlet, object @object, bool enumerateCollection = true) where T : Cmdlet
         {
             if (@object != null)
             {

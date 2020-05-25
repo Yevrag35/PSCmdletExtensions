@@ -42,7 +42,7 @@
     <Compile Include="internal\StringFormatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="bound\BoundParameterExtensions.cs" />
-    <Compile Include="shoulds\ShouldFormatPSCmdlet.cs" />
+    <Compile Include="shoulds\ShouldExtensions.cs" />
     <Compile Include="writes\WriteExtensions.cs" />
     <None Include="zz_notfinished\PipedObjectExtensions.cs" />
   </ItemGroup>
