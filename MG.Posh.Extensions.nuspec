@@ -6,6 +6,7 @@
     <version>1.2.1</version>
     <authors>Mike Garvey</authors>
     <owners>Yevrag35, LLC.</owners>
+	<icon>images\posh_ext_64.png</icon>
     <license type="file">licenses\license.txt</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/Yevrag35/PSCmdletExtensions</projectUrl>
@@ -68,5 +69,6 @@
       src="MG.Posh.Extensions-Core\bin\Release\netcoreapp3.1\MG.Posh.Extensions-Core.deps.json"
       target="lib\netcoreapp3.1\MG.Posh.Extensions-Core.deps.json" />
     <file src="license.txt" target="licenses\" />
+	<file src="posh_ext_64.png" target="images\" />
   </files>
 </package>
