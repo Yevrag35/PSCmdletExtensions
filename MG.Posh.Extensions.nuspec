@@ -3,15 +3,15 @@
   <metadata>
     <id>MG.Posh.Extensions</id>
     <title>MG.Posh.Extensions</title>
-    <version>1.1.0</version>
+    <version>1.2.1</version>
     <authors>Mike Garvey</authors>
     <owners>Yevrag35, LLC.</owners>
     <license type="file">licenses\license.txt</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/Yevrag35/PSCmdletExtensions</projectUrl>
-    <description>A small library of PSCmdlet extension methods including LINQ parameter checking and piped object retrieval.</description>
+    <description>A small library of PSCmdlet extension methods including LINQ parameter checking.</description>
     <language>en-US</language>
-	<releaseNotes>Bump to use GA PowerShell 7 SDK</releaseNotes>
+	<releaseNotes>Adding standard library and removed piped objects.</releaseNotes>
     <copyright>Copyright © 2019-2020 Yevrag35, LLC.</copyright>
     <repository type="Git" url="https://github.com/Yevrag35/PSCmdletExtensions.git" />
     <summary>A small library of PSCmdlet extension methods including LINQ parameter checking and piped object retrieval.</summary>
@@ -19,6 +19,9 @@
       <group targetFramework=".NETFramework4.5.2">
         <dependency id="Microsoft.PowerShell.5.ReferenceAssemblies" version="1.1.0" />
       </group>
+	  <group targetFramework="NetStandard2.0">
+		<dependency id="PowerShellStandard.Library" version="5.1.0" />
+	  </group>
       <group targetFramework=".NETCoreApp2.1">
         <dependency id="Microsoft.PowerShell.SDK" version="6.2.4" exclude="Build,Analyzers" />
       </group>
@@ -34,6 +37,18 @@
     <file
       src="MG.Posh.Extensions\bin\Release\MG.Posh.Extensions.xml"
       target="lib\net452\MG.Posh.Extensions.xml" />
+	<file
+	  src="MG.Posh.Extensions-Standard\bin\Release\netstandard2.0\MG.Posh.Extensions-Standard.dll"
+	  target="lib\netstandard2.0\MG.Posh.Extensions-Standard.dll" />
+	<file
+	  src="MG.Posh.Extensions-Standard\bin\Release\netstandard2.0\MG.Posh.Extensions-Standard.pdb"
+	  target="lib\netstandard2.0\MG.Posh.Extensions-Standard.pdb" />
+	<file
+	  src="MG.Posh.Extensions-Standard\bin\Release\netstandard2.0\MG.Posh.Extensions-Standard.xml"
+	  target="lib\netstandard2.0\MG.Posh.Extensions-Standard.xml" />
+	<file
+	  src="MG.Posh.Extensions-Standard\bin\Release\netstandard2.0\MG.Posh.Extensions-Standard.deps.json"
+	  target="lib\netstandard2.0\MG.Posh.Extensions-Standard.deps.json" />
     <file
       src="MG.Posh.Extensions-Core\bin\Release\netcoreapp2.1\MG.Posh.Extensions-Core.dll"
       target="lib\netcoreapp2.1\MG.Posh.Extensions-Core.dll" />

@@ -10,6 +10,10 @@
     <FileVersion>1.2.1</FileVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>E:\Local_Repos\MG.Posh.Extensions\MG.Posh.Extensions-Standard\MG.Posh.Extensions-Standard.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
   </ItemGroup>
