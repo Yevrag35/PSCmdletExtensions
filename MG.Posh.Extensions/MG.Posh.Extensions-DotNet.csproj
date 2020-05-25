@@ -39,8 +39,10 @@
   <ItemGroup>
     <Compile Include="bound\BoundParameterExtensions-BuiltIn.cs" />
     <Compile Include="bound\BoundParameterExtensions-LINQ.cs" />
+    <Compile Include="internal\StringFormatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="bound\BoundParameterExtensions.cs" />
+    <Compile Include="shoulds\ShouldFormatPSCmdlet.cs" />
     <Compile Include="writes\WriteExtensions.cs" />
     <None Include="zz_notfinished\PipedObjectExtensions.cs" />
   </ItemGroup>
@@ -50,7 +52,9 @@
       <IncludeAssets>compile</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="pipeline\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>powershell.exe -ex Bypass -File "$(SolutionDir)GenerateNugetPkg.ps1" -ProjectName "$(ProjectName)" -Configuration "$(ConfigurationName)"</PostBuildEvent>
