@@ -44,6 +44,9 @@
     <Compile Include="bound\BoundParameterExtensions.cs" />
     <Compile Include="shoulds\ShouldExtensions.cs" />
     <Compile Include="writes\WriteExtensions.cs" />
+    <Compile Include="zz_notfinished\IProgressKeeper.cs" />
+    <Compile Include="zz_notfinished\ProgressExtensions.cs" />
+    <Compile Include="zz_notfinished\ProgressKeeper.cs" />
     <None Include="zz_notfinished\PipedObjectExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
