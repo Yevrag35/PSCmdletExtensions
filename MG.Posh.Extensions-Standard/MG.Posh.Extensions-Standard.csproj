@@ -3,15 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MG.Posh.Extensions</RootNamespace>
-    <Version>1.2.1</Version>
+    <Version>1.3.0</Version>
     <Company>Yevrag35, LLC.</Company>
     <Authors>Mike Garvey</Authors>
-    <AssemblyVersion>1.2.1</AssemblyVersion>
-    <FileVersion>1.2.1</FileVersion>
+    <AssemblyVersion>1.3.0</AssemblyVersion>
+    <FileVersion>1.3.0</FileVersion>
+    <RepositoryUrl>https://github.com/Yevrag35/PSCmdletExtensions.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Yevrag35/PSCmdletExtensions</PackageProjectUrl>
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>E:\Local_Repos\MG.Posh.Extensions\MG.Posh.Extensions-Standard\MG.Posh.Extensions-Standard.xml</DocumentationFile>
+    <DocumentationFile>C:\Repos\MG.Posh.Extensions\MG.Posh.Extensions-Standard\MG.Posh.Extensions-Standard.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +22,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\MG.Posh.Extensions\**\*.cs" Exclude="..\MG.Posh.Extensions\Properties\AssemblyInfo.cs;..\MG.Posh.Extensions\bin\**\*.*;..\MG.Posh.Extensions\obj\**\*.*;..\MG.Posh.Extensions\notfinished\**\*.*" />
+		<Compile Include="..\MG.Posh.Extensions\**\*.cs" Exclude="..\MG.Posh.Extensions\Properties\AssemblyInfo.cs;..\MG.Posh.Extensions\bin\**\*.*;..\MG.Posh.Extensions\obj\**\*.*;..\MG.Posh.Extensions\zz_notfinished\**\*.*" />
 	</ItemGroup>
 
 </Project>
