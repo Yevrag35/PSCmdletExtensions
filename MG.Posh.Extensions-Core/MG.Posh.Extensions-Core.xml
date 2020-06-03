@@ -133,5 +133,139 @@
                 the <see cref="T:System.Management.Automation.PSCmdlet"/> contains any of the specified keys.
             </returns>
         </member>
+        <member name="T:MG.Posh.Extensions.Shoulds.ShouldExtensions">
+            <summary>
+            A class that extends <see cref="T:System.Management.Automation.PSCmdlet"/>'s "ShouldProcess" and "ShouldContinue" methods to accept
+            formatted-strings with arguments.
+            </summary>
+        </member>
+        <member name="M:MG.Posh.Extensions.Shoulds.ShouldExtensions.ShouldProcessFormat``1(``0,System.String,System.String,System.Object[])">
+            <summary>
+            Confirm the operation with the user.  Cmdlets which make changes (e.g. delete files, stop services, etc.) should call ShouldProcessFormat
+            to give the user the opportunity to confirm that the operation should actually be performed.  The provided action will be formatted with the
+            given arguments.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> the method is extending.</param>
+            <param name="action">The action that should be performed.</param>
+            <param name="target">A composite string format of the target resource being acted upon.  This will potentially be displayed to the user.</param>
+            <param name="targetArguments">The object(s) to format.</param>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.InvalidOperationException"/>
+            <exception cref="T:System.Management.Automation.PipelineStoppedException"/>
+            <returns>
+            If ShouldProcessFormat returns true, the operation should be performed.  If ShouldProcessFormat returns false, the operation should not
+            be performed, and the <see cref="T:System.Management.Automation.PSCmdlet"/> should move on to the next target resource.
+            </returns>
+        </member>
+        <member name="T:MG.Posh.Extensions.Writes.WriteExtensions">
+            <summary>
+            A static class that extends <see cref="T:System.Management.Automation.Cmdlet"/>'s base "write" output stream methods to accept
+            formatted-strings with arguments and write standard output.
+            </summary>
+        </member>
+        <member name="M:MG.Posh.Extensions.Writes.WriteExtensions.WriteDebugFormat``1(``0,System.String,System.Object[])">
+            <summary>
+            Formats a given string and arguments and sends it to <see cref="M:System.Management.Automation.Cmdlet.WriteDebug(System.String)"/> to display debug information.
+            </summary>
+            <remarks>
+            Use this to display debug information
+            on the inner-workings of your <see cref="T:System.Management.Automation.Cmdlet"/>.  By default, debug output will not be displayed, although this can be configured
+            with the DebugPreference shell variable or the -Debug command-line parameter.
+            </remarks>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.Cmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.Cmdlet"/> the method is extending.</param>
+            <param name="formattedText">A composite format string for the debug output.</param>
+            <param name="arguments">The object(s) to format.</param>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.InvalidOperationException"/>
+            <exception cref="T:System.Management.Automation.PipelineStoppedException"/>
+        </member>
+        <member name="M:MG.Posh.Extensions.Writes.WriteExtensions.WriteArgumentError``1(``0,System.String,System.Management.Automation.ErrorCategory,System.Object)">
+            <summary>
+            Writes the specifed message as an <see cref="T:System.ArgumentException"/> with the target object to the error pipe.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.Cmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.Cmdlet"/> the method is extending.</param>
+            <param name="message">The message of the <see cref="T:System.ArgumentException"/>.</param>
+            <param name="category">The category that best describes the error.</param>
+            <param name="targetObject">This is the object against which the <see cref="T:System.Management.Automation.Cmdlet"/> or provider was operating on when the error occurred.
+            This is optional.</param>
+            <exception cref="T:System.InvalidOperationException"/>
+            <exception cref="T:System.Management.Automation.PipelineStoppedException"/>
+        </member>
+        <member name="M:MG.Posh.Extensions.Writes.WriteExtensions.WriteError``2(``1,System.String,System.Management.Automation.ErrorCategory,System.Object)">
+            <summary>
+            Writes the specified message into the given <see cref="T:System.Exception"/> type provided all to the error pipe.
+            </summary>
+            <remarks><typeparamref name="T1"/> should have a public constructor that accepts a string (message) parameter.</remarks>
+            <typeparam name="T2">The type of the inheriting <see cref="T:System.Management.Automation.Cmdlet"/>.</typeparam>
+            <typeparam name="T1">The type of exception to create in the <see cref="T:System.Management.Automation.ErrorRecord"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.Cmdlet"/> the method is extending.</param>
+            <param name="message">The message of the <see cref="T:System.Exception"/>.</param>
+            <param name="category">The category that best describes the error.</param>
+            <param name="targetObject">This is the object against which the <see cref="T:System.Management.Automation.Cmdlet"/> or provider was operating on when the error occurred.</param>
+            <exception cref="T:System.InvalidOperationException"/>
+            <exception cref="T:System.Management.Automation.PipelineStoppedException"/>
+        </member>
+        <member name="M:MG.Posh.Extensions.Writes.WriteExtensions.WriteError``1(``0,System.String,System.Type,System.Management.Automation.ErrorCategory,System.Object)">
+            <summary>
+            Writes the specified message into the given <see cref="T:System.Exception"/> type provided all to the error pipe.
+            </summary>
+            <remarks><typeparamref name="T1"/> should have a public constructor that accepts a string (message) parameter.</remarks>
+            <typeparam name="T2">The type of the inheriting <see cref="T:System.Management.Automation.Cmdlet"/>.</typeparam>
+            <typeparam name="T1">The type of exception to create in the <see cref="T:System.Management.Automation.ErrorRecord"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.Cmdlet"/> the method is extending.</param>
+            <param name="message">The message of the <see cref="T:System.Exception"/>.</param>
+            <param name="category">The category that best describes the error.</param>
+            <param name="targetObject">This is the object against which the <see cref="T:System.Management.Automation.Cmdlet"/> or provider was operating on when the error occurred.</param>
+            <exception cref="T:System.InvalidOperationException"/>
+            <exception cref="T:System.Management.Automation.PipelineStoppedException"/>
+        </member>
+        <member name="M:MG.Posh.Extensions.Writes.WriteExtensions.WriteVerboseFormat``1(``0,System.String,System.Object[])">
+            <summary>
+            Formats a given string and arguments and sends it to <see cref="M:System.Management.Automation.Cmdlet.WriteVerbose(System.String)"/> to display verbose information.
+            </summary>
+            <remarks>
+            Use this to display more detailed information
+            about the activity of your <see cref="T:System.Management.Automation.Cmdlet"/>.  By default, verbose output will not be displayed, although this can be configured with the
+            VerbosePreference shell variable or the -Verbose and -Debug command-line parameters.
+            </remarks>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.Cmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.Cmdlet"/> the method is extending.</param>
+            <param name="formattedText">A composite format string for the verbose output.</param>
+            <param name="arguments">The object(s) to format.</param>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.InvalidOperationException"/>
+            <exception cref="T:System.Management.Automation.PipelineStoppedException"/>
+        </member>
+        <member name="M:MG.Posh.Extensions.Writes.WriteExtensions.WriteWarningFormat``1(``0,System.String,System.Object[])">
+            <summary>
+            Formats a given string and arguments and sends it to <see cref="M:System.Management.Automation.Cmdlet.WriteWarning(System.String)"/> to display warning information.
+            </summary>
+            <remarks>
+            Use this to display more detailed 
+            information about the activity of your <see cref="T:System.Management.Automation.Cmdlet"/>.  By default, warning output will not be displayed, although this can 
+            be configured with the WarningPreference shell variable or the -Verbose and -Debug command-line parameters.
+            </remarks>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.Cmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.Cmdlet"/> the method is extending.</param>
+            <param name="formattedText">A composite format string for the warning output.</param>
+            <param name="arguments">The object(s) to format.</param>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.Management.Automation.PipelineStoppedException"/>
+        </member>
+        <member name="M:MG.Posh.Extensions.Writes.WriteExtensions.WriteToPipeline``1(``0,System.Object,System.Boolean)">
+            <summary>
+            Sends an <see cref="T:System.Object"/> to the PowerShell output stream and optionally specifies whether or not to enumerate
+            it if it's a collection.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.Cmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.Cmdlet"/> the method is extending.</param>
+            <param name="object">The object to send to the pipeline</param>
+            <param name="enumerateCollection">Indicates whether the object will be enumerated as its sent.</param>
+            <exception cref="T:System.InvalidOperationException"/>
+            <exception cref="T:System.Management.Automation.PipelineStoppedException"/>
+        </member>
     </members>
 </doc>
