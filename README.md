@@ -29,3 +29,23 @@ public class GetEmployee : PSCmdlet
 }
 
 ```
+
+## PSObject creation with certain class members
+```csharp
+public struct Employee
+{
+    public int EmployeeId;
+    public string FirstName;
+    public string LastName;
+    
+    public PSObject GetName()
+    {
+        return PSOFactory.CreateFromObject(this, e => e.FirstName, e => e.LastName);
+    }
+}
+
+// DISPLAYS
+// FirstName LastName
+// --------- --------
+// Chuck     Norris
+```
