@@ -8,18 +8,29 @@ using System.Reflection;
 
 namespace MG.Posh.Extensions
 {
-
+    /// <summary>
+    /// An extension class providing <see cref="Cmdlet"/> methods of creating <see cref="PSObject"/>
+    /// structures from segments of other .NET classes and/or structs.
+    /// </summary>
     public static class PSObjectExtensions
     {
-        public static void AddFromObject<T>(this PSObject pso, T obj, 
-            params Expression<Func<T, object>>[] memberExpressions)
+        /// <summary>
+        /// Adds a <see cref="PSNoteProperty"/> to an existing <see cref="PSObject"/> with the names
+        /// and values of members of the specified object.
+        /// </summary>
+        /// <typeparam name="T">The type of the specified class or struct that the expressions represent..</typeparam>
+        /// <param name="pso">The <see cref="PSObject"/> the method is extended.</param>
+        /// <param name="obj">The object whose member expressions will be resolved and added to the <see cref="PSObject"/>.</param>
+        /// <param name="memberExpressions">The expression representations where the names and values will be populated from.</param>
+        public static void AddFromObject<T1, T2>(this PSObject pso, T1 obj, 
+            params Expression<Func<T1, T2>>[] memberExpressions)
         {
             if (memberExpressions == null || memberExpressions.Length <= 0)
                 return;
 
-            foreach (Expression<Func<T, object>> ex in memberExpressions)
+            foreach (Expression<Func<T1, T2>> ex in memberExpressions)
             {
-                pso.Properties.Add<T, object>(obj, ex);
+                pso.Properties.Add<T1, T2>(obj, ex);
             }
         }
 
@@ -48,6 +59,13 @@ namespace MG.Posh.Extensions
             props.Add(new PSNoteProperty(name, value));
         }
 
+        /// <summary>
+        /// Converts a <see cref="Hashtable"/> into a <see cref="PSObject"/>.  All key/value pairs
+        /// will be copied to a new <see cref="PSObject"/> as <see cref="PSNoteProperty"/> members.
+        /// </summary>
+        /// <remarks>If the provided <see cref="Hashtable"/> is empty, then <see langword="null"/>
+        /// will be returned instead of an empty <see cref="PSObject"/>.</remarks>
+        /// <param name="ht">The hasthable to transform.</param>
         public static PSObject ToPSObject(this Hashtable ht)
         {
             if (ht == null || ht.Count <= 0)

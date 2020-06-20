@@ -11,6 +11,24 @@ namespace MG.Posh.Extensions.Writes
     public static class WriteExtensions
     {
         /// <summary>
+        /// Terminate the command and report the error.
+        /// </summary>
+        /// <typeparam name="T">The type of the inheriting <see cref="Cmdlet"/>.</typeparam>
+        /// <param name="cmdlet">The <see cref="Cmdlet"/> the method is extending.</param>
+        /// <param name="exception">This is an exception that describes the error.</param>
+        /// <param name="errorId">The string used to construct the FullyQualifiedErrorId.</param>
+        /// <param name="category">The category that best describes the error.</param>
+        /// <param name="targetObject">This is the object against which the <see cref="Cmdlet"/> or provider was operating on when the error occurred.</param>
+        /// <exception cref="PipelineStoppedException"/>
+        public static void ThrowTerminatingError<T>(this T cmdlet, Exception exception, string errorId, ErrorCategory category, object targetObject = null)
+            where T : Cmdlet
+        {
+            cmdlet.ThrowTerminatingError(new ErrorRecord(
+                exception, errorId, category, targetObject
+            ));
+        }
+
+        /// <summary>
         /// Formats a given string and arguments and sends it to <see cref="Cmdlet.WriteDebug(string)"/> to display debug information.
         /// </summary>
         /// <remarks>
@@ -44,9 +62,29 @@ namespace MG.Posh.Extensions.Writes
         /// This is optional.</param>
         /// <exception cref="InvalidOperationException"/>
         /// <exception cref="PipelineStoppedException"/>
-        public static void WriteArgumentError<T>(this T cmdlet, string message, ErrorCategory category, object targetObject = null) where T : Cmdlet
+        public static void WriteArgumentError<T>(this T cmdlet, string message, ErrorCategory category, object targetObject = null) 
+            where T : Cmdlet
         {
             var errRec = new ErrorRecord(new ArgumentException(message), typeof(ArgumentException).FullName, category, targetObject);
+            cmdlet.WriteError(errRec);
+        }
+
+        /// <summary>
+        /// Writes the specified <see cref="Exception"/> with the target object to the error pipe.
+        /// </summary>
+        /// <typeparam name="T">The type of the inheriting <see cref="Cmdlet"/>.</typeparam>
+        /// <param name="cmdlet">The <see cref="Cmdlet"/> the method is extending.</param>
+        /// <param name="exception">This is an exception that describes the error.</param>
+        /// <param name="errorId">The string used to construct the FullyQualifiedErrorId.</param>
+        /// <param name="category">The category that best describes the error.</param>
+        /// <param name="targetObject">This is the object against which the <see cref="Cmdlet"/> or provider was operating on when the error occurred.
+        /// This is optional.</param>
+        /// <exception cref="InvalidOperationException"/>
+        /// <exception cref="PipelineStoppedException"/>
+        public static void WriteError<T>(this T cmdlet, Exception exception, string errorId, ErrorCategory category, object targetObject = null)
+            where T : Cmdlet
+        {
+            var errRec = new ErrorRecord(exception, errorId, category, targetObject);
             cmdlet.WriteError(errRec);
         }
 

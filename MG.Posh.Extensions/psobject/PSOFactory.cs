@@ -9,7 +9,7 @@ namespace MG.Posh.Extensions
     public static class PSOFactory
     {
 
-        public static PSObject CreateFromObject<T>(T obj, params Expression<Func<T, object>>[] memberExpressions)
+        public static PSObject CreateFromObject<T1, T2>(T1 obj, params Expression<Func<T1, T2>>[] memberExpressions)
         {
             var pso = new PSObject();
             pso.AddFromObject(obj, memberExpressions);
