@@ -10,15 +10,46 @@ namespace MG.Posh.Extensions.Filters
 {
     public static class FilterByExtensions
     {
+        /// <summary>
+        /// Filters an <see cref="IEnumerable{TOutput}"/> with the given where clause.
+        /// </summary>
+        /// <typeparam name="TOutput"></typeparam>
+        /// <param name="filterThis">The collection to filter.</param>
+        /// <param name="runOnlyIf">Indicates whether to actually perform the 
+        /// filter.  Useful in chaining these statements.</param>
+        /// <param name="whereClause">The predicate used to filter the collection.</param>
+        /// <returns>A filtered <see cref="IEnumerable{TOutput}"/>.</returns>
+        public static IEnumerable<TOutput> ThenFilterBy<TOutput>(this IEnumerable<TOutput> filterThis,
+            bool runOnlyIf, Func<TOutput, bool> whereClause)
+        {
+            if (!runOnlyIf || whereClause == null)
+                return filterThis;
+
+            return filterThis?.Where(whereClause);
+        }
+
+        /// <summary>
+        /// Filters an <see cref="IEnumerable{TOutput}"/> with the given where clause.
+        /// </summary>
+        /// <remarks>Using the specified <see cref="PSCmdlet"/> and expression, 
+        /// it is determined first if the parameter was bound prior to filtering the collection.</remarks>
+        /// <typeparam name="TOutput"></typeparam>
+        /// <typeparam name="TCmdlet"></typeparam>
+        /// <typeparam name="TParameter"></typeparam>
+        /// <param name="filterThis">The collection to filter.</param>
+        /// <param name="cmdlet">The <see cref="PSCmdlet"/> who bound parameters are checked.</param>
+        /// <param name="cmdletParameter">The bound parameter expression to check.</param>
+        /// <param name="runOnlyIf">Indicates whether to actually perform the 
+        /// filter.  Useful in chaining these statements.</param>
+        /// <param name="whereClause">The predicate used to filter the collection.</param>
+        /// <returns>A filtered <see cref="IEnumerable{TOutput}"/>.</returns>
         public static IEnumerable<TOutput> ThenFilterBy<TCmdlet, TParameter, TOutput>(
             this IEnumerable<TOutput> filterThis, TCmdlet cmdlet, Expression<Func<TCmdlet, TParameter>> cmdletParameter,
-            Func<TCmdlet, bool> condition, Func<TOutput, bool> whereClause) where TCmdlet : PSCmdlet
+            bool runOnlyIf, Func<TOutput, bool> whereClause) where TCmdlet : PSCmdlet
         {
             if (!cmdlet.ContainsParameter(cmdletParameter)
                 ||
-                condition == null
-                ||
-                !condition(cmdlet)
+                !runOnlyIf
                 ||
                 whereClause == null)
             {
@@ -28,6 +59,13 @@ namespace MG.Posh.Extensions.Filters
             return filterThis.Where(whereClause);
         }
 
+        /// <summary>
+        /// Filters the given collection of strings and returns all which match any of the specified
+        /// wildcard strings.
+        /// </summary>
+        /// <param name="itemCollection">The collection of strings to filter.</param>
+        /// <param name="wildcardStrings">The collection of wildcard strings that will filter
+        /// the incoming string collection.</param>
         public static IEnumerable<string> FilterByWildcards(
             this IEnumerable<string> itemCollection, IEnumerable<string> wildcardStrings)
         {
@@ -59,7 +97,7 @@ namespace MG.Posh.Extensions.Filters
         }
         public static IEnumerable<T> FilterByWildcards<T>(
             this IEnumerable<T> itemCollection, IEnumerable<string> wildcardStrings,
-            Func<T, IConvertible> propertyFunc)
+            Func<T, IConvertible> valueToFilter)
         {
             if (itemCollection == null || wildcardStrings == null)
                 return itemCollection;
@@ -73,18 +111,18 @@ namespace MG.Posh.Extensions.Filters
                             pat => 
                                 pat.IsMatch(
                                     Convert.ToString(
-                                        propertyFunc(i)))));
+                                        valueToFilter(i)))));
         }
 
         public static IEnumerable<T> FilterManyByWildcards<T>(
             this IEnumerable<T> itemCollection, IEnumerable<string> wildcardStrings,
-            params Func<T, IConvertible>[] propertyFuncs)
+            params Func<T, IConvertible>[] valuesToFilter)
         {
             if (
                 itemCollection == null
                 || wildcardStrings == null
-                || propertyFuncs == null
-                || propertyFuncs.Length <= 0
+                || valuesToFilter == null
+                || valuesToFilter.Length <= 0
             )
             {
                 return itemCollection;
@@ -94,7 +132,7 @@ namespace MG.Posh.Extensions.Filters
 
             return itemCollection
                 .Where(x =>
-                    propertyFuncs
+                    valuesToFilter
                         .Any(pf =>
                             patterns
                                 .Any(pat =>
