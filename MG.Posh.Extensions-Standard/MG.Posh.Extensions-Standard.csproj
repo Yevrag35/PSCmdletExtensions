@@ -11,10 +11,18 @@
     <RepositoryUrl>https://github.com/Yevrag35/PSCmdletExtensions.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Yevrag35/PSCmdletExtensions</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
+    <PackageId>PowerShell Extensions .NET Standard 2.0</PackageId>
+    <Product>MG.Posh.Extensions .NET Standard 2.0</Product>
+    <AssemblyName>MG.Posh.Extensions</AssemblyName>
+	<AssemblyTitle>PowerShell Extensions .NET Standard 2.0</AssemblyTitle>
+    <Description>PowerShell Extensions .NET Standard 2.0</Description>
+    <Copyright>Copyright © 2020 Yevrag35, LLC.</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>C:\Repos\MG.Posh.Extensions\MG.Posh.Extensions-Standard\MG.Posh.Extensions-Standard.xml</DocumentationFile>
+    <DocumentationFile>MG.Posh.Extensions.xml</DocumentationFile>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>

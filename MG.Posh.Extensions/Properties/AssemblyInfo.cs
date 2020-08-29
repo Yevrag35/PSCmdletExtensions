@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MG.Posh.CmdletExtensions")]
+[assembly: AssemblyTitle("PowerShell Extensions .NET")]
 [assembly: AssemblyDescription("A library providing extended and simplified capabilities for PSCmdlets.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Yevrag35, LLC.")]
-[assembly: AssemblyProduct("MG.Posh.CmdletExtensions")]
+[assembly: AssemblyProduct("MG.Posh.Extensions .NET")]
 [assembly: AssemblyCopyright("Copyright © 2019-2020 Yevrag35, LLC.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
