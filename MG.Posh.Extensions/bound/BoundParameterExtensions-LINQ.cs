@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Management.Automation;
+using MG.Posh.Extensions.Internal;
 
 namespace MG.Posh.Extensions.Bound
 {
@@ -12,14 +13,14 @@ namespace MG.Posh.Extensions.Bound
         ///     Performs a "ContainsKey" lookup on the current <see cref="PSCmdlet.MyInvocation"/> BoundParameters against
         ///     the specified member(s).
         /// </summary>
-        /// <typeparam name="T">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
+        /// <typeparam name="TCmdlet">The type of the inheriting <see cref="PSCmdlet"/>.</typeparam>
         /// <param name="cmdlet">The <see cref="PSCmdlet"/> that the method is extending.</param>
         /// <param name="parameter">The <see cref="MemberExpression"/> containing the parameter name to check are bound.</param>
         /// <returns>Whether the <see cref="PSCmdlet"/> contains the specified key.</returns>
-        public static bool ContainsParameter<T>(this T cmdlet, Expression<Func<T, object>> parameter) where T : PSCmdlet
+        public static bool ContainsParameter<TCmdlet, TParameter>(this TCmdlet cmdlet, Expression<Func<TCmdlet, TParameter>> parameter) where TCmdlet : PSCmdlet
         {
             bool result = false;
-            if (TryAsMemberExpression(parameter, out MemberExpression memEx))
+            if (StringFormatter.TryAsMemberExpression(parameter, out MemberExpression memEx))
             {
                 result = cmdlet.MyInvocation.BoundParameters.ContainsKey(memEx.Member.Name);
             }
@@ -64,21 +65,6 @@ namespace MG.Posh.Extensions.Bound
                 return cmdlet.MyInvocation.BoundParameters.Count > 0;
 
             return parameters.Any(p => ContainsParameter(cmdlet, p));
-        }
-
-        private static bool TryAsMemberExpression<T>(Expression<Func<T, object>> expression, out MemberExpression member)
-            where T : PSCmdlet
-        {
-            member = null;
-            if (expression?.Body is MemberExpression memEx)
-            {
-                member = memEx;
-            }
-            else if (expression?.Body is UnaryExpression unEx && unEx.Operand is MemberExpression unExMem)
-            {
-                member = unExMem;
-            }
-            return member != null;
         }
     }
 }

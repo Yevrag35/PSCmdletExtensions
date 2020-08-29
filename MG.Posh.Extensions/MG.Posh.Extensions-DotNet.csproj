@@ -37,11 +37,16 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="bound\add\AddBoundExtensions.cs" />
     <Compile Include="bound\BoundParameterExtensions-BuiltIn.cs" />
     <Compile Include="bound\BoundParameterExtensions-LINQ.cs" />
+    <Compile Include="bound\remove\RemoveBoundExtensions.cs" />
+    <Compile Include="filters\FilterBy.cs" />
     <Compile Include="internal\StringFormatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="bound\BoundParameterExtensions.cs" />
+    <Compile Include="psobject\PSObjectExtensions.cs" />
+    <Compile Include="psobject\PSOFactory.cs" />
     <Compile Include="shoulds\ShouldExtensions.cs" />
     <Compile Include="writes\WriteExtensions.cs" />
     <None Include="zz_notfinished\IProgressKeeper.cs" />

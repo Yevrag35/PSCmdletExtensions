@@ -1,8 +1,11 @@
-﻿using System;
+﻿using MG.Posh.Extensions.Filters;
+using MG.Posh.Extensions.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Management.Automation;
+using System.Reflection;
 
 namespace MG.Posh.Extensions.Bound
 {
@@ -97,6 +100,46 @@ namespace MG.Posh.Extensions.Bound
                 return false;
 
             return parameterNames.Any(name => cmdlet.MyInvocation.BoundParameters.ContainsKey(name));
+        }
+
+        /// <summary>
+        /// Checks if a parameter of a <see cref="PSCmdlet"/> has been bound positionally.
+        /// </summary>
+        /// <typeparam name="TCmdlet"></typeparam>
+        /// <typeparam name="TParameter"></typeparam>
+        /// <param name="cmdlet">The <see cref="PSCmdlet"/> we are extending.</param>
+        /// <param name="parameter">The expression of the cmdlet's parameter to check.</param>
+        /// <returns>
+        ///     <see langword="true"/> if parameter's name is found within the <see cref="InvocationInfo"/>'s 'BoundPositionally'
+        ///     list of parameter names.
+        ///     <see langword="false"/> if not or if the parameter does not exist.
+        /// </returns>
+        public static bool ContainsPositionalParameter<TCmdlet, TParameter>(this TCmdlet cmdlet, Expression<Func<TCmdlet, TParameter>> parameter)
+            where TCmdlet : PSCmdlet
+        {
+            bool result = false;
+            if (StringFormatter.TryAsMemberExpression(parameter, out MemberExpression memEx))
+            {
+                IReadOnlyList<string> boundPositionally = GetPositionalParameters(cmdlet.MyInvocation);
+                if (boundPositionally != null && boundPositionally.Count > 0 && boundPositionally.Contains(memEx.Member.Name))
+                    result = true;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a read-only copy of those parameter names which have been bound positionally.
+        /// </summary>
+        /// <param name="info">The invocation info to retrieve the bound parameters dictionary from.</param>
+        /// <returns>
+        ///     A <see cref="IReadOnlyList{T}"/> of strings which represent the parameter names that have been bound positionally.
+        /// </returns>
+        public static IReadOnlyList<string> GetPositionalParameters(this InvocationInfo info)
+        {
+            Type boundType = info.BoundParameters.GetType();
+            PropertyInfo pi = boundType.GetProperty("BoundPositionally", BindingFlags.Instance | BindingFlags.Public);
+            object val = pi?.GetValue(info.BoundParameters);
+            return val != null && val is IReadOnlyList<string> list ? list : null;
         }
     }
 }

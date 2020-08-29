@@ -1,9 +1,26 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>MG.Posh.Extensions-Standard</name>
+        <name>MG.Posh.Extensions</name>
     </assembly>
     <members>
+        <member name="M:MG.Posh.Extensions.Bound.Add.AddBoundExtensions.AddParameter``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Adds the specified parameter of the extending <see cref="T:System.Management.Automation.PSCmdlet"/> and it's current value to the cmdlet's BoundParameters.
+            </summary>
+            <typeparam name="TCmdlet"></typeparam>
+            <typeparam name="TParameter"></typeparam>
+            <param name="cmdlet"></param>
+            <param name="parameter">
+                The <see cref="T:System.Linq.Expressions.MemberExpression"/> of the cmdlet's parameter to add with its current value.
+            </param>
+            <exception cref="T:System.ArgumentException">
+                An parameter with the same name has already been added to the BoundParameters dictionary.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+                The member name of <paramref name="parameter"/> was not found.
+            </exception>
+        </member>
         <member name="T:MG.Posh.Extensions.Bound.BoundBuiltinParameterExtensions">
             <summary>
             An extension class providing methods for <see cref="T:System.Management.Automation.PSCmdlet"/> to easily check if specific built-in advanced parameters
@@ -44,12 +61,12 @@
             An extension class providing methods for <see cref="T:System.Management.Automation.PSCmdlet"/> instances to easily check their BoundParameter dictionary.
             </summary>
         </member>
-        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.ContainsParameter``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.ContainsParameter``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
             <summary>
                 Performs a "ContainsKey" lookup on the current <see cref="P:System.Management.Automation.PSCmdlet.MyInvocation"/> BoundParameters against
                 the specified member(s).
             </summary>
-            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
+            <typeparam name="TCmdlet">The type of the inheriting <see cref="T:System.Management.Automation.PSCmdlet"/>.</typeparam>
             <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> that the method is extending.</param>
             <param name="parameter">The <see cref="T:System.Linq.Expressions.MemberExpression"/> containing the parameter name to check are bound.</param>
             <returns>Whether the <see cref="T:System.Management.Automation.PSCmdlet"/> contains the specified key.</returns>
@@ -133,6 +150,123 @@
                 the <see cref="T:System.Management.Automation.PSCmdlet"/> contains any of the specified keys.
             </returns>
         </member>
+        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.ContainsPositionalParameter``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Checks if a parameter of a <see cref="T:System.Management.Automation.PSCmdlet"/> has been bound positionally.
+            </summary>
+            <typeparam name="TCmdlet"></typeparam>
+            <typeparam name="TParameter"></typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> we are extending.</param>
+            <param name="parameter">The expression of the cmdlet's parameter to check.</param>
+            <returns>
+                <see langword="true"/> if parameter's name is found within the <see cref="T:System.Management.Automation.InvocationInfo"/>'s 'BoundPositionally'
+                list of parameter names.
+                <see langword="false"/> if not or if the parameter does not exist.
+            </returns>
+        </member>
+        <member name="M:MG.Posh.Extensions.Bound.BoundParameterExtensions.GetPositionalParameters(System.Management.Automation.InvocationInfo)">
+            <summary>
+            Returns a read-only copy of those parameter names which have been bound positionally.
+            </summary>
+            <param name="info">The invocation info to retrieve the bound parameters dictionary from.</param>
+            <returns>
+                A <see cref="T:System.Collections.Generic.IReadOnlyList`1"/> of strings which represent the parameter names that have been bound positionally.
+            </returns>
+        </member>
+        <member name="M:MG.Posh.Extensions.Bound.Remove.RemoveBoundExtensions.RemoveParameter``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Removes the specified parameter from the extending cmdlet's <see cref="P:System.Management.Automation.InvocationInfo.BoundParameters"/>.
+            </summary>
+            <typeparam name="TCmdlet"></typeparam>
+            <typeparam name="TParameter"></typeparam>
+            <param name="cmdlet"></param>
+            <param name="parameter">
+                The <see cref="T:System.Linq.Expressions.MemberExpression"/> of the cmdlet's parameter which will be removed by its <see cref="P:System.Reflection.MemberInfo.Name"/>.
+            </param>
+            <returns>
+                <see langword="true"/> if the <see cref="P:System.Reflection.MemberInfo.Name"/> is successfully found and removed; otherwise,
+                <see langword="false"/>.  This method returns <see langword="false"/> if the member's name is not found in 
+                <see cref="P:System.Management.Automation.InvocationInfo.BoundParameters"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+                The <see cref="P:System.Reflection.MemberInfo.Name"/> of <paramref name="parameter"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:MG.Posh.Extensions.Bound.Remove.RemoveBoundExtensions.RemoveParameters``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}}[])">
+            <summary>
+            Removes the specified parameter collection from the the extending cmdlet's <see cref="P:System.Management.Automation.InvocationInfo.BoundParameters"/>.
+            </summary>
+            <typeparam name="TCmdlet"></typeparam>
+            <typeparam name="TParameter"></typeparam>
+            <param name="cmdlet"></param>
+            <param name="expressions">The <see cref="T:System.Linq.Expressions.MemberExpression"/> collection which will be all be removed.</param>
+            <exception cref="T:System.ArgumentNullException">
+                A <see cref="P:System.Reflection.MemberInfo.Name"/> of one of the <paramref name="expressions"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:MG.Posh.Extensions.Filters.FilterByExtensions.ThenFilterBy``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.Func{``0,System.Boolean})">
+            <summary>
+            Filters an <see cref="T:System.Collections.Generic.IEnumerable`1"/> with the given where clause.
+            </summary>
+            <typeparam name="TOutput"></typeparam>
+            <param name="filterThis">The collection to filter.</param>
+            <param name="runOnlyIf">Indicates whether to actually perform the 
+            filter.  Useful in chaining these statements.</param>
+            <param name="whereClause">The predicate used to filter the collection.</param>
+            <returns>A filtered <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</returns>
+        </member>
+        <member name="M:MG.Posh.Extensions.Filters.FilterByExtensions.ThenFilterBy``3(System.Collections.Generic.IEnumerable{``2},``0,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Boolean,System.Func{``2,System.Boolean})">
+            <summary>
+            Filters an <see cref="T:System.Collections.Generic.IEnumerable`1"/> with the given where clause.
+            </summary>
+            <remarks>Using the specified <see cref="T:System.Management.Automation.PSCmdlet"/> and expression, 
+            it is determined first if the parameter was bound prior to filtering the collection.</remarks>
+            <typeparam name="TOutput"></typeparam>
+            <typeparam name="TCmdlet"></typeparam>
+            <typeparam name="TParameter"></typeparam>
+            <param name="filterThis">The collection to filter.</param>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.PSCmdlet"/> who bound parameters are checked.</param>
+            <param name="cmdletParameter">The bound parameter expression to check.</param>
+            <param name="runOnlyIf">Indicates whether to actually perform the 
+            filter.  Useful in chaining these statements.</param>
+            <param name="whereClause">The predicate used to filter the collection.</param>
+            <returns>A filtered <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</returns>
+        </member>
+        <member name="M:MG.Posh.Extensions.Filters.FilterByExtensions.FilterByWildcards(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Filters the given collection of strings and returns all which match any of the specified
+            wildcard strings.
+            </summary>
+            <param name="itemCollection">The collection of strings to filter.</param>
+            <param name="wildcardStrings">The collection of wildcard strings that will filter
+            the incoming string collection.</param>
+        </member>
+        <member name="T:MG.Posh.Extensions.PSObjectExtensions">
+            <summary>
+            An extension class providing <see cref="T:System.Management.Automation.Cmdlet"/> methods of creating <see cref="T:System.Management.Automation.PSObject"/>
+            structures from segments of other .NET classes and/or structs.
+            </summary>
+        </member>
+        <member name="M:MG.Posh.Extensions.PSObjectExtensions.AddFromObject``2(System.Management.Automation.PSObject,``0,System.Linq.Expressions.Expression{System.Func{``0,``1}}[])">
+            <summary>
+            Adds a <see cref="T:System.Management.Automation.PSNoteProperty"/> to an existing <see cref="T:System.Management.Automation.PSObject"/> with the names
+            and values of members of the specified object.
+            </summary>
+            <typeparam name="T"/>
+            <typeparam name="TProp">The type of the object's member.</typeparam>
+            <param name="pso">The <see cref="T:System.Management.Automation.PSObject"/> the method is extended.</param>
+            <param name="obj">The object whose member expressions will be resolved and added to the <see cref="T:System.Management.Automation.PSObject"/>.</param>
+            <param name="memberExpressions">The expression representations where the names and values will be populated from.</param>
+        </member>
+        <member name="M:MG.Posh.Extensions.PSObjectExtensions.ToPSObject(System.Collections.Hashtable)">
+            <summary>
+            Converts a <see cref="T:System.Collections.Hashtable"/> into a <see cref="T:System.Management.Automation.PSObject"/>.  All key/value pairs
+            will be copied to a new <see cref="T:System.Management.Automation.PSObject"/> as <see cref="T:System.Management.Automation.PSNoteProperty"/> members.
+            </summary>
+            <remarks>If the provided <see cref="T:System.Collections.Hashtable"/> is empty, then <see langword="null"/>
+            will be returned instead of an empty <see cref="T:System.Management.Automation.PSObject"/>.</remarks>
+            <param name="ht">The hasthable to transform.</param>
+        </member>
         <member name="T:MG.Posh.Extensions.Shoulds.ShouldExtensions">
             <summary>
             A class that extends <see cref="T:System.Management.Automation.PSCmdlet"/>'s "ShouldProcess" and "ShouldContinue" methods to accept
@@ -164,6 +298,18 @@
             formatted-strings with arguments and write standard output.
             </summary>
         </member>
+        <member name="M:MG.Posh.Extensions.Writes.WriteExtensions.ThrowTerminatingError``1(``0,System.Exception,System.String,System.Management.Automation.ErrorCategory,System.Object)">
+            <summary>
+            Terminate the command and report the error.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.Cmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.Cmdlet"/> the method is extending.</param>
+            <param name="exception">This is an exception that describes the error.</param>
+            <param name="errorId">The string used to construct the FullyQualifiedErrorId.</param>
+            <param name="category">The category that best describes the error.</param>
+            <param name="targetObject">This is the object against which the <see cref="T:System.Management.Automation.Cmdlet"/> or provider was operating on when the error occurred.</param>
+            <exception cref="T:System.Management.Automation.PipelineStoppedException"/>
+        </member>
         <member name="M:MG.Posh.Extensions.Writes.WriteExtensions.WriteDebugFormat``1(``0,System.String,System.Object[])">
             <summary>
             Formats a given string and arguments and sends it to <see cref="M:System.Management.Automation.Cmdlet.WriteDebug(System.String)"/> to display debug information.
@@ -188,6 +334,20 @@
             <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.Cmdlet"/>.</typeparam>
             <param name="cmdlet">The <see cref="T:System.Management.Automation.Cmdlet"/> the method is extending.</param>
             <param name="message">The message of the <see cref="T:System.ArgumentException"/>.</param>
+            <param name="category">The category that best describes the error.</param>
+            <param name="targetObject">This is the object against which the <see cref="T:System.Management.Automation.Cmdlet"/> or provider was operating on when the error occurred.
+            This is optional.</param>
+            <exception cref="T:System.InvalidOperationException"/>
+            <exception cref="T:System.Management.Automation.PipelineStoppedException"/>
+        </member>
+        <member name="M:MG.Posh.Extensions.Writes.WriteExtensions.WriteError``1(``0,System.Exception,System.String,System.Management.Automation.ErrorCategory,System.Object)">
+            <summary>
+            Writes the specified <see cref="T:System.Exception"/> with the target object to the error pipe.
+            </summary>
+            <typeparam name="T">The type of the inheriting <see cref="T:System.Management.Automation.Cmdlet"/>.</typeparam>
+            <param name="cmdlet">The <see cref="T:System.Management.Automation.Cmdlet"/> the method is extending.</param>
+            <param name="exception">This is an exception that describes the error.</param>
+            <param name="errorId">The string used to construct the FullyQualifiedErrorId.</param>
             <param name="category">The category that best describes the error.</param>
             <param name="targetObject">This is the object against which the <see cref="T:System.Management.Automation.Cmdlet"/> or provider was operating on when the error occurred.
             This is optional.</param>
