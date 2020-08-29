@@ -12,7 +12,7 @@
     <projectUrl>https://github.com/Yevrag35/PSCmdletExtensions</projectUrl>
     <description>A small library of PSCmdlet extension methods including LINQ parameter checking.</description>
     <language>en-US</language>
-	<releaseNotes>Adding standard library and removed piped objects.</releaseNotes>
+	<releaseNotes>PSObjectExtensions, chained filtering, and more extensions for bound parameters.</releaseNotes>
     <copyright>Copyright © 2019-2020 Yevrag35, LLC.</copyright>
     <repository type="Git" url="https://github.com/Yevrag35/PSCmdletExtensions.git" />
     <summary>A small library of PSCmdlet extension methods including LINQ parameter checking and and filtering.</summary>
