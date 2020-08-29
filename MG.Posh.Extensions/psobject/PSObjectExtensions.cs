@@ -18,24 +18,25 @@ namespace MG.Posh.Extensions
         /// Adds a <see cref="PSNoteProperty"/> to an existing <see cref="PSObject"/> with the names
         /// and values of members of the specified object.
         /// </summary>
-        /// <typeparam name="T">The type of the specified class or struct that the expressions represent..</typeparam>
+        /// <typeparam name="T"/>
+        /// <typeparam name="TProp">The type of the object's member.</typeparam>
         /// <param name="pso">The <see cref="PSObject"/> the method is extended.</param>
         /// <param name="obj">The object whose member expressions will be resolved and added to the <see cref="PSObject"/>.</param>
         /// <param name="memberExpressions">The expression representations where the names and values will be populated from.</param>
-        public static void AddFromObject<T1, T2>(this PSObject pso, T1 obj, 
-            params Expression<Func<T1, T2>>[] memberExpressions)
+        public static void AddFromObject<T, TProp>(this PSObject pso, T obj, 
+            params Expression<Func<T, TProp>>[] memberExpressions)
         {
             if (memberExpressions == null || memberExpressions.Length <= 0)
                 return;
 
-            foreach (Expression<Func<T1, T2>> ex in memberExpressions)
+            foreach (Expression<Func<T, TProp>> ex in memberExpressions)
             {
-                pso.Properties.Add<T1, T2>(obj, ex);
+                pso.Properties.Add(obj, ex);
             }
         }
 
-        internal static void Add<T1, T2>(this PSMemberInfoCollection<PSPropertyInfo> props,
-            T1 obj, Expression<Func<T1, T2>> memberExpression)
+        internal static void Add<T, TProp>(this PSMemberInfoCollection<PSPropertyInfo> props,
+            T obj, Expression<Func<T, TProp>> memberExpression)
         {
             MemberInfo mi = null;
             if (memberExpression.Body is MemberExpression memEx)
@@ -49,7 +50,7 @@ namespace MG.Posh.Extensions
 
             if (mi != null)
             {
-                Func<T1, T2> func = memberExpression.Compile();
+                Func<T, TProp> func = memberExpression.Compile();
                 props.Add(new PSNoteProperty(mi.Name, func(obj)));
             }
         }
