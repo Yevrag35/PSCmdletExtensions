@@ -61,7 +61,7 @@ namespace MG.Posh.Extensions.Bound
         /// </returns>
         public static bool ContainsAnyParameters<T>(this T cmdlet, params Expression<Func<T, object>>[] parameters) where T : PSCmdlet
         {
-            if (parameters == null || parameters.Length > 0)
+            if (parameters == null || parameters.Length <= 0)
                 return cmdlet.MyInvocation.BoundParameters.Count > 0;
 
             return parameters.Any(p => ContainsParameter(cmdlet, p));
