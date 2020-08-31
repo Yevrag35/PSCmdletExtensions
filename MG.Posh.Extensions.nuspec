@@ -3,7 +3,7 @@
   <metadata>
     <id>MG.Posh.Extensions</id>
     <title>MG.Posh.Extensions</title>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <authors>Mike Garvey</authors>
     <owners>Yevrag35, LLC.</owners>
 	<icon>images\posh_ext_64.png</icon>
@@ -12,7 +12,7 @@
     <projectUrl>https://github.com/Yevrag35/PSCmdletExtensions</projectUrl>
     <description>A small library of PSCmdlet extension methods including LINQ parameter checking.</description>
     <language>en-US</language>
-	<releaseNotes>PSObjectExtensions, chained filtering, and more extensions for bound parameters.</releaseNotes>
+	<releaseNotes>Hotfix for ContainsAnyParameters.</releaseNotes>
     <copyright>Copyright © 2019-2020 Yevrag35, LLC.</copyright>
     <repository type="Git" url="https://github.com/Yevrag35/PSCmdletExtensions.git" />
     <summary>A small library of PSCmdlet extension methods including LINQ parameter checking and and filtering.</summary>

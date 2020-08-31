@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>MG.Posh.Extensions</RootNamespace>
-    <Version>1.4.0</Version>
+    <Version>1.4.1</Version>
     <Company>Yevrag35, LLC.</Company>
     <Authors>Mike Garvey</Authors>
-    <AssemblyVersion>1.4.0</AssemblyVersion>
-    <FileVersion>1.4.0</FileVersion>
+    <AssemblyVersion>1.4.1</AssemblyVersion>
+    <FileVersion>1.4.1</FileVersion>
     <RepositoryUrl>https://github.com/Yevrag35/PSCmdletExtensions.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Yevrag35/PSCmdletExtensions</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
