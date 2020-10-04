@@ -118,7 +118,7 @@ namespace MG.Posh.Extensions.Bound
             where TCmdlet : PSCmdlet
         {
             bool result = false;
-            if (StringFormatter.TryAsMemberExpression(parameter, out MemberExpression memEx))
+            if (ExpressionFactory.TryAsMemberExpression(parameter, out MemberExpression memEx))
             {
                 IReadOnlyList<string> boundPositionally = GetPositionalParameters(cmdlet.MyInvocation);
                 if (boundPositionally != null && boundPositionally.Count > 0 && boundPositionally.Contains(memEx.Member.Name))

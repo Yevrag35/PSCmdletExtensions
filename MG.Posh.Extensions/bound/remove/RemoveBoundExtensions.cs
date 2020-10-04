@@ -31,7 +31,7 @@ namespace MG.Posh.Extensions.Bound.Remove
             where TCmdlet : PSCmdlet
         {
             bool result = false;
-            if (StringFormatter.TryAsMemberExpression(parameter, out MemberExpression memEx))
+            if (ExpressionFactory.TryAsMemberExpression(parameter, out MemberExpression memEx))
             {
                 result = cmdlet.MyInvocation.BoundParameters.Remove(memEx.Member.Name);
             }

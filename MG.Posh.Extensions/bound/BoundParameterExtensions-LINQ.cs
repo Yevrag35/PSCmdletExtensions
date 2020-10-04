@@ -20,7 +20,7 @@ namespace MG.Posh.Extensions.Bound
         public static bool ContainsParameter<TCmdlet, TParameter>(this TCmdlet cmdlet, Expression<Func<TCmdlet, TParameter>> parameter) where TCmdlet : PSCmdlet
         {
             bool result = false;
-            if (StringFormatter.TryAsMemberExpression(parameter, out MemberExpression memEx))
+            if (ExpressionFactory.TryAsMemberExpression(parameter, out MemberExpression memEx))
             {
                 result = cmdlet.MyInvocation.BoundParameters.ContainsKey(memEx.Member.Name);
             }

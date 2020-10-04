@@ -28,7 +28,7 @@ namespace MG.Posh.Extensions.Bound.Add
             this TCmdlet cmdlet, 
             Expression<Func<TCmdlet, TParameter>> parameter) where TCmdlet : PSCmdlet
         {
-            if (StringFormatter.TryAsMemberExpression(parameter, out MemberExpression memEx))
+            if (ExpressionFactory.TryAsMemberExpression(parameter, out MemberExpression memEx))
             {
                 Func<TCmdlet, TParameter> func = parameter.Compile();
                 cmdlet.MyInvocation.BoundParameters.Add(memEx.Member.Name, func(cmdlet));
