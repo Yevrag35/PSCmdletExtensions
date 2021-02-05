@@ -114,6 +114,28 @@ namespace MG.Posh.Extensions.Filters
                                         valueToFilter(i)))));
         }
 
+        public static IEnumerable<T> FilterByWildcards<T, TProp>(
+            this IEnumerable<T> itemCollection, IEnumerable<string> wildcardStrings,
+            Func<T, TProp[]> arrayPropertyToFilter)
+            where TProp : IConvertible
+        {
+            if (itemCollection == null || wildcardStrings == null)
+                return itemCollection;
+
+            IEnumerable<WildcardPattern> patterns = MakePatterns(wildcardStrings);
+
+            return itemCollection
+                .Where(i =>
+                    patterns
+                        .Any(
+                            pat =>
+                                (arrayPropertyToFilter(i)?.Any(
+                                    ap =>
+                                        pat.IsMatch(Convert.ToString(ap))))
+                                            .GetValueOrDefault()));
+        }
+
+
         public static IEnumerable<T> FilterManyByWildcards<T>(
             this IEnumerable<T> itemCollection, IEnumerable<string> wildcardStrings,
             params Func<T, IConvertible>[] valuesToFilter)
@@ -140,6 +162,8 @@ namespace MG.Posh.Extensions.Filters
                                         Convert.ToString(
                                             pf(x))))));
         }
+
+        
 
         private static IEnumerable<WildcardPattern> MakePatterns(IEnumerable<string> strings) =>
             strings
