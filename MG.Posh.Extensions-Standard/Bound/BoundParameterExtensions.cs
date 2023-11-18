@@ -1,6 +1,8 @@
-﻿using MG.Posh.Internal.Attributes;
+﻿using MG.Posh.Internal;
+using MG.Posh.Internal.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Management.Automation;
 using System.Reflection;
@@ -12,7 +14,47 @@ namespace MG.Posh.Extensions.Bound
     /// </summary>
     public static partial class BoundParameterExtensions
     {
-        static readonly Lazy<HashSet<string>> _builtInNames = new Lazy<HashSet<string>>(GetBuiltInParameterNames);
+        static readonly Lazy<HashSet<string>> _builtInNames;
+        static readonly PropertyInfo? _positionalProperty;
+        static readonly Version _max = new Version(7, 4, 0, int.MaxValue);
+
+        static BoundParameterExtensions()
+        {
+            _builtInNames = new Lazy<HashSet<string>>(GetBuiltInParameterNames);
+
+            PropertyInfo boundProp = typeof(InvocationInfo)
+                .GetProperty("BoundParameters", BindingFlags.Public | BindingFlags.Instance);
+
+            var ass = typeof(PSCmdlet).Assembly;
+            var version = ass.GetCustomAttributes<AssemblyFileVersionAttribute>().FirstOrDefault();
+
+            if (!Version.TryParse(version?.Version, out Version? vers) || _max < vers)
+            {
+                Debug.Fail("_max needs to be updated for this version.");
+            }
+
+            var query = ass.GetTypes().Where(x => "PSBoundParametersDictionary" == x.Name);
+
+            var first = query.FirstOrDefault();
+            _positionalProperty = first?.GetProperty("BoundPositionally");
+        }
+
+
+        public static bool IsParameterBoundPositionally(this PSCmdlet cmdlet, string parameterName)
+        {
+            Guard.NotNull(cmdlet, nameof(cmdlet));
+            Guard.NotNullOrEmpty(parameterName, nameof(parameterName));
+
+            if (_positionalProperty is null)
+            {
+                Debug.Fail("Unable to find Positional List in BoundParameters");
+                return false;
+            }
+
+            return _positionalProperty.GetValue(cmdlet.MyInvocation.BoundParameters) is ICollection<string> boundPositionally
+                   &&
+                   boundPositionally.Contains(parameterName);
+        }
 
         private static Type GetBuiltInParameterClass()
         {
