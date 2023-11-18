@@ -7,7 +7,7 @@ using MG.Posh.Extensions.Internal;
 
 namespace MG.Posh.Extensions.Bound
 {
-    public static partial  class BoundParameterExtensions
+    public static partial class BoundParameterExtensions
     {
         /// <summary>
         ///     Performs a "ContainsKey" lookup on the current <see cref="PSCmdlet.MyInvocation"/> BoundParameters against
