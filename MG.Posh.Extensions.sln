@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MG.Posh.Extensions-Core", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MG.Posh.Extensions", "MG.Posh.Extensions-Standard\MG.Posh.Extensions.csproj", "{84A4871F-C1EE-4D8D-9549-62DE84AC8508}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing", "Testing\Testing.csproj", "{2D918673-231D-4780-AE60-5414BD39D8D7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test5.1", "Test5.1\Test5.1.csproj", "{135A51F7-2AC4-4D11-A7A1-830D6C6EC5C9}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{84A4871F-C1EE-4D8D-9549-62DE84AC8508}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84A4871F-C1EE-4D8D-9549-62DE84AC8508}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84A4871F-C1EE-4D8D-9549-62DE84AC8508}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D918673-231D-4780-AE60-5414BD39D8D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D918673-231D-4780-AE60-5414BD39D8D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D918673-231D-4780-AE60-5414BD39D8D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D918673-231D-4780-AE60-5414BD39D8D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{135A51F7-2AC4-4D11-A7A1-830D6C6EC5C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{135A51F7-2AC4-4D11-A7A1-830D6C6EC5C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{135A51F7-2AC4-4D11-A7A1-830D6C6EC5C9}.Release|Any CPU.ActiveCfg = Release|Any CPU

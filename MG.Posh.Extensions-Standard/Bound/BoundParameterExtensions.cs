@@ -22,7 +22,7 @@ namespace MG.Posh.Extensions.Bound
         {
             _builtInNames = new Lazy<HashSet<string>>(GetBuiltInParameterNames);
 
-            PropertyInfo boundProp = typeof(InvocationInfo)
+            PropertyInfo? boundProp = typeof(InvocationInfo)
                 .GetProperty("BoundParameters", BindingFlags.Public | BindingFlags.Instance);
 
             var ass = typeof(PSCmdlet).Assembly;
@@ -35,7 +35,7 @@ namespace MG.Posh.Extensions.Bound
 
             var query = ass.GetTypes().Where(x => "PSBoundParametersDictionary" == x.Name);
 
-            var first = query.FirstOrDefault();
+            Type? first = query.FirstOrDefault();
             _positionalProperty = first?.GetProperty("BoundPositionally");
         }
 
