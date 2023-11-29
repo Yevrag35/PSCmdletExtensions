@@ -1,4 +1,5 @@
 using MG.Posh.Internal.Reflection;
+using System;
 using System.Management.Automation;
 
 namespace MG.Posh.PSProperties
@@ -21,6 +22,31 @@ namespace MG.Posh.PSProperties
             return this.Value?.ToString() ?? string.Empty;
         }
 
+#if NET5_0_OR_GREATER
+        const int SPACE_AND_EQUALS_LENGTH = 2;
+        public override string ToString()
+        {
+            string psTypeName = this.GetPSTypeName();
+            string valueAsStr = this.GetValueToString();
+
+            int length = psTypeName.Length + this.Name.Length + valueAsStr.Length + SPACE_AND_EQUALS_LENGTH;
+
+            return string.Create(length, (psTypeName, name: this.Name, valueAsStr), (chars, state) =>
+            {
+                state.psTypeName.AsSpan().CopyTo(chars);
+                int position = state.psTypeName.Length;
+
+                chars[position++] = ' ';
+
+                state.name.AsSpan().CopyTo(chars.Slice(position));
+                position += state.name.Length;
+
+                chars[position++] = '=';
+
+                state.valueAsStr.AsSpan().CopyTo(chars.Slice(position));
+            });
+        }
+#else
         const string STR_FORMAT = "{0} {1}={2}";
         public override string ToString()
         {
@@ -28,6 +54,6 @@ namespace MG.Posh.PSProperties
             string valueAsStr = this.GetValueToString();
             return string.Format(STR_FORMAT, psTypeName, this.Name, valueAsStr);
         }
+#endif
     }
 }
-
