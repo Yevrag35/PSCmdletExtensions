@@ -17,6 +17,7 @@ namespace MG.Posh.Extensions.PSPaths
         [return: NotNullIfNotNull(nameof(path))]
         public static string? GetResolvedPath(this PSCmdlet cmdlet, string? path, out ProviderInfo? providerInfo)
         {
+            string[] arr = Array.Empty<string>();
             Guard.NotNull(cmdlet, nameof(cmdlet));
 
             if (string.IsNullOrWhiteSpace(path))

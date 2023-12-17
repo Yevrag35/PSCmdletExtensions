@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "NET8-Pwsh7.4": {
+      "commandName": "Executable",
+      "commandLineArgs": "-NoExit -File \"Debug.ps1\"",
+      "workingDirectory": "bin/Debug/net8.0"
+    }
+  }
+}

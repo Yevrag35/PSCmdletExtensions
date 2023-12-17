@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <RootNamespace>MG.Posh.Extensions</RootNamespace>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="System.Management.Automation" Version="7.2.17" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="System.Management.Automation" Version="7.4.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Debug.ps1" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)'!='Release'">
+		<Content Include="Debug.ps1">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup Condition="'$(Configuration)'=='Release'">
+		<Content Include="Debug.ps1">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\MG.Posh.Extensions\**\*.cs" Exclude="..\MG.Posh.Extensions\obj\**\*.cs" />
+	</ItemGroup>
+
+</Project>
