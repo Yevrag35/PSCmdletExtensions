@@ -1,15 +1,20 @@
 using MG.Posh.Extensions.Spans.Internal;
+using Microsoft.PowerShell.Commands;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
+using System.Management.Automation;
 
 namespace MG.Posh.Extensions.Spans
 {
     /// <summary>
     /// A read-only <see cref="string"/> that can be used for checking equality and pattern matching based on traditional wildcard characters.
     /// </summary>
-    public readonly struct WildcardString : IEquatable<WildcardString>, IEquatable<string>, IEnumerable<char>, ISpanFormattable
+    /// <remarks>A lightweight alternative to <see cref="WildcardPattern"/>.</remarks>
+    public readonly struct WildcardString : IComparable<string>, IComparable<WildcardString>, IEquatable<WildcardString>, IEquatable<string>, IEnumerable<char>, ISpanFormattable
 #if NET8_0_OR_GREATER
     , ISpanParsable<WildcardString>
 #endif
@@ -23,16 +28,16 @@ namespace MG.Posh.Extensions.Spans
         readonly string? _pattern;
 
         /// <summary>
-        /// Gets the <see cref="char"/> object at the specified position in the current <see cref="WildcardString"/>
-        /// object.
+        /// Gets the <see cref="char"/> object at the specified position in the current 
+        /// <see cref="WildcardString"/> instance.
         /// </summary>
         /// <param name="index">The position in the current string.</param>
         /// <returns>The char object at the specified index.</returns>
         public char this[int index] => _pattern?[index] ?? default;
 
         /// <summary>
-        /// Indicates whether the <see cref="WildcardString"/> contains any wildcard characters ('?' or '*') in
-        /// the string.
+        /// Indicates whether this instance contains any wildcard 
+        /// characters ('?' or '*') in the string.
         /// </summary>
         /// <remarks>
         ///     If <see langword="false"/>, during the <see cref="IsMatch(ReadOnlySpan{char})"/> and
@@ -47,15 +52,24 @@ namespace MG.Posh.Extensions.Spans
         public bool ContainsWildcards => _containsWildcards;
 
         /// <summary>
-        /// Indicates whether the <see cref="WildcardString"/> object is equal to <see cref="string.Empty"/>.
+        /// Indicates whether the <see cref="WildcardString"/> instance is equal to 
+        /// <see cref="string.Empty"/>.
         /// </summary>
         [MemberNotNullWhen(false, nameof(_pattern))]
         public bool IsEmpty => !_isNotEmpty;
         /// <summary>
-        /// Gets the number of characters in the current <see cref="WildcardString"/> object.
+        /// Gets the number of characters in the current <see cref="WildcardString"/> instance.
         /// </summary>
         public int Length => _length;
 
+        private WildcardString(ReadOnlySpan<char> span)
+        {
+            bool notEmpty = span.IsEmpty;
+            _isNotEmpty = notEmpty;
+            _length = span.Length;
+            _containsWildcards = notEmpty && ContainsWildcardCharacters(span);
+            _pattern = notEmpty ? new string(span) : string.Empty;
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="WildcardString"/> struct using the 
         /// specified <see cref="string"/>.
@@ -67,13 +81,16 @@ namespace MG.Posh.Extensions.Spans
             _isNotEmpty = notEmpty;
             pattern ??= string.Empty;
             _length = pattern.Length;
-            _containsWildcards = notEmpty && ContainsWildcardCharacters(pattern);
+            bool containsWc = notEmpty && ContainsWildcardCharacters(pattern);
+            _containsWildcards = containsWc;
             _pattern = pattern;
         }
 
-        private static bool AreCharactersEqual(in char x, in char y)
+        private static bool AreCharactersEqual(in char x, in char y, in bool ignoreCase)
         {
-            return char.ToLowerInvariant(x) == char.ToLowerInvariant(y);
+            return !ignoreCase
+                ? x == y
+                : char.ToUpperInvariant(x) == char.ToUpperInvariant(y);
         }
         /// <summary>
         /// Creates a new read-only span over the <see cref="WildcardString"/> object.
@@ -104,6 +121,16 @@ namespace MG.Posh.Extensions.Spans
         {
             return _pattern.AsSpan(start, length);
         }
+        /// <inheritdoc cref="string.CompareTo(string?)"/>
+        public int CompareTo(string? strB)
+        {
+            return StringComparer.CurrentCulture.Compare(_pattern ?? string.Empty, strB);
+        }
+        public int CompareTo(WildcardString other)
+        {
+            return this.CompareTo(other._pattern ?? string.Empty);
+        }
+
         private static bool ContainsWildcardCharacters(ReadOnlySpan<char> pattern)
         {
             return pattern.IndexOfAny(stackalloc char[] { STAR, QUESTION }) >= 0;
@@ -113,9 +140,15 @@ namespace MG.Posh.Extensions.Spans
         {
             return StringComparer.InvariantCultureIgnoreCase.Equals(_pattern, other._pattern);
         }
-        public bool Equals(string? other)
+        /// <inheritdoc cref="string.Equals(string?)"/>
+        public bool Equals(string? value)
         {
             return StringComparer.InvariantCultureIgnoreCase.Equals(_pattern, other);
+        }
+        /// <inheritdoc cref="string.Equals(string?, StringComparison)"/>
+        public bool Equals(string? value, StringComparison comparisonType)
+        {
+            return StringComparer.FromComparison(comparisonType).Equals(_pattern ?? string.Empty, other);
         }
         public override bool Equals([NotNullWhen(true)] object? obj)
         {
@@ -130,15 +163,16 @@ namespace MG.Posh.Extensions.Spans
 
             return false;
         }
+        /// <inheritdoc cref="string.GetEnumerator"/>
         public IEnumerator<char> GetEnumerator()
         {
-            string pat = _pattern ?? string.Empty;
-            return pat.GetEnumerator();
+            return _pattern?.GetEnumerator() ?? Enumerable.Empty<char>().GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
+        /// <inheritdoc cref="string.GetHashCode()"/>
         public override int GetHashCode()
         {
             if (this.IsEmpty)
@@ -165,9 +199,9 @@ namespace MG.Posh.Extensions.Spans
         ///     <see langword="true"/> if <paramref name="input"/> matches the <see cref="WildcardString"/> pattern;
         ///     otherwise, <see langword="false"/>.
         /// </returns>
-        public bool IsMatch(string? input)
+        public bool IsMatch(string? input, StringComparison comparisonType)
         {
-            return this.IsMatch(input.AsSpan());
+            return this.IsMatch(input.AsSpan(), comparisonType);
         }
         /// <summary>
         /// Determines if the specified <see cref="char"/> span matches the current 
@@ -185,14 +219,19 @@ namespace MG.Posh.Extensions.Spans
         ///     <see langword="true"/> if <paramref name="input"/> matches the <see cref="WildcardString"/> pattern;
         ///     otherwise, <see langword="false"/>.
         /// </returns>
-        public bool IsMatch(ReadOnlySpan<char> input)
+        public bool IsMatch(ReadOnlySpan<char> input, StringComparison comparisonType)
         {
-            return _containsWildcards
-                ? IsMatch(_pattern.AsSpan(), input)
-            : _pattern.AsSpan().Equals(input, StringComparison.InvariantCultureIgnoreCase);
+            ReadOnlySpan<char> span = _pattern;
+
+            if (!_containsWildcards)
+            {
+                return span.Equals(input, comparisonType);
+            }
+
+            return IsMatch(span, input, comparisonType.IsIgnoreCase());
         }
 
-        private static bool IsMatch(ReadOnlySpan<char> pattern, ReadOnlySpan<char> input)
+        private static bool IsMatch(ReadOnlySpan<char> pattern, ReadOnlySpan<char> input, bool ignoreCase)
         {
             int starIndex = -1;
             int iIndex = -1;
@@ -202,7 +241,7 @@ namespace MG.Posh.Extensions.Spans
 
             while (i < input.Length)
             {
-                if (j < pattern.Length && (pattern[j] == QUESTION || AreCharactersEqual(pattern[j], input[i])))
+                if (j < pattern.Length && (pattern[j] == QUESTION || AreCharactersEqual(pattern[j], input[i], in ignoreCase)))
                 {
                     ++i;
                     ++j;
@@ -231,6 +270,61 @@ namespace MG.Posh.Extensions.Spans
             }
 
             return j == pattern.Length;
+        }
+
+        /// <summary>
+        /// Indicates whether the specified <see cref="WildcardString"/> contains only whitespace characters.
+        /// </summary>
+        /// <returns>
+        ///     <see langword="true"/> if the <see cref="WildcardString"/> contains only whitespace 
+        ///     chaaracters; otherwise, <see langword="false"/>.
+        /// </returns>
+        public bool IsWhitespace()
+        {
+            return _pattern.AsSpan().IsWhiteSpace();
+        }
+
+        public WildcardString ToLower()
+        {
+            ReadOnlySpan<char> pat = _pattern;
+
+            if (pat.IsWhiteSpace())
+            {
+                return this;
+            }
+
+            Span<char> scratch = stackalloc char[pat.Length];
+            _ = pat.ToLower(scratch, CultureInfo.CurrentCulture);
+
+            if (pat.Equals(scratch, StringComparison.Ordinal))
+            {
+                return this;
+            }
+            else
+            {
+                return new WildcardString(span: scratch);
+            }
+        }
+        public WildcardString ToUpper()
+        {
+            ReadOnlySpan<char> pat = _pattern;
+
+            if (pat.IsWhiteSpace())
+            {
+                return this;
+            }
+
+            Span<char> scratch = stackalloc char[pat.Length];
+            _ = pat.ToUpper(scratch, CultureInfo.CurrentCulture);
+
+            if (pat.Equals(scratch, StringComparison.Ordinal))
+            {
+                return this;
+            }
+            else
+            {
+                return new WildcardString(span: scratch);
+            }
         }
 
         #region FORMATTABLE
@@ -302,6 +396,22 @@ namespace MG.Posh.Extensions.Spans
             return x.Equals(y);
         }
         public static bool operator !=(WildcardString x, WildcardString y)
+        {
+            return !(x == y);
+        }
+        public static bool operator ==(WildcardString x, string? y)
+        {
+            return x.Equals(y);
+        }
+        public static bool operator !=(WildcardString x, string? y)
+        {
+            return !(x == y);
+        }
+        public static bool operator ==(string? x, WildcardString y)
+        {
+            return y.Equals(x);
+        }
+        public static bool operator !=(string? x, WildcardString y)
         {
             return !(x == y);
         }

@@ -83,16 +83,9 @@ namespace MG.Posh.Attributes
             {
                 return;
             }
-            else if (!(arguments is IEnumerable col))
-            {
-                this.ValidateElement(arguments, engineIntrinsics);
-            }
             else
             {
-                foreach (object? element in col)
-                {
-                    this.ValidateElement(element, engineIntrinsics);
-                }
+                this.ValidateElement(arguments, engineIntrinsics);
             }
         }
         private void ValidateElement(object? element, EngineIntrinsics engineIntrinsics)
@@ -114,7 +107,7 @@ namespace MG.Posh.Attributes
         {
             if (!this.AllowedTypes.Contains(elementType))
             {
-                if (!this.IncludeFamily || !this.AllowedTypes.Any(x => elementType.IsAssignableFrom(x)))
+                if (!this.IncludeFamily || !this.AllowedTypes.Any(x => x.IsAssignableFrom(elementType)))
                 {
                     this.ThrowInvalidType(element.ToString(), elementType, this.AllowedTypes);
                 }
