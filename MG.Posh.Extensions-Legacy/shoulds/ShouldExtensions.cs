@@ -34,6 +34,7 @@ namespace MG.Posh.Extensions.Shoulds
             {
                 formattedTarget = string.Empty;
             }
+
             return cmdlet.ShouldProcess(formattedTarget, action);
         }
     }

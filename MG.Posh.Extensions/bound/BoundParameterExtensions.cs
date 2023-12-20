@@ -16,7 +16,7 @@ namespace MG.Posh.Extensions.Bound
     {
         static readonly Lazy<HashSet<string>> _builtInNames;
         static readonly PropertyInfo? _positionalProperty;
-        static readonly Version _max = new Version(7, 4, 0, int.MaxValue);
+        static readonly Version _max = new Version(7, 5, 0, int.MaxValue);
 
         static BoundParameterExtensions()
         {
