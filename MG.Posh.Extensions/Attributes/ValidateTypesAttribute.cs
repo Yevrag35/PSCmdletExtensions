@@ -46,7 +46,7 @@ namespace MG.Posh.Attributes
 
             _allowsNull = allowNullElements;
             this.AllowedTypes = allowedTypes;
-            this.IncludeFamily = !excludeSubclasses;
+            this.IncludeFamily = true;
         }
         /// <summary>
         /// 

@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{F579
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingModule-NETFramework", "TestingModule-NETFramework\TestingModule-NETFramework.csproj", "{6D626ED8-C477-4986-AB04-F7C62EC03853}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting", "UnitTesting\UnitTesting.csproj", "{5DB45965-FCBA-4CC7-8416-C764DF68ED86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{6D626ED8-C477-4986-AB04-F7C62EC03853}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D626ED8-C477-4986-AB04-F7C62EC03853}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D626ED8-C477-4986-AB04-F7C62EC03853}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DB45965-FCBA-4CC7-8416-C764DF68ED86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DB45965-FCBA-4CC7-8416-C764DF68ED86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DB45965-FCBA-4CC7-8416-C764DF68ED86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DB45965-FCBA-4CC7-8416-C764DF68ED86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{44B91111-49F4-4452-9DA6-9B1485A89BBD} = {162C8792-91B6-4D1D-94BD-5287DE257C0F}
 		{6D626ED8-C477-4986-AB04-F7C62EC03853} = {F579D731-63C6-40A1-9F7C-989761071CDD}
+		{5DB45965-FCBA-4CC7-8416-C764DF68ED86} = {F579D731-63C6-40A1-9F7C-989761071CDD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D37B726-F2F7-4C5E-AC22-700F44335DDB}

@@ -5,8 +5,18 @@ using System;
 
 namespace MG.Posh.PSProperties
 {
+    /// <summary>
+    /// A read-only, <see langword="abstract"/> base class of <see cref="PSNoteProperty"/>.
+    /// </summary>
+    /// <remarks>
+    ///     <inheritdoc cref="PSNotePropertyBase"/>
+    /// </remarks>
     public abstract class ReadOnlyPSNoteProperty : PSNotePropertyBase
     {
+        /// <summary>
+        /// Gets <see langword="false"/> since the value of an <see cref="ReadOnlyPSNoteProperty"/>
+        /// can never be set after constructed.
+        /// </summary>
         public sealed override bool IsSettable => false;
 
         /// <summary>
@@ -29,13 +39,7 @@ namespace MG.Posh.PSProperties
 
         protected ReadOnlyPSNoteProperty(string propertyName)
         {
-            Guard.NotNullOrEmpty(propertyName, nameof(propertyName));
             this.SetMemberName(propertyName);
-        }
-        protected ReadOnlyPSNoteProperty(string propertyName, object? value)
-            : this(propertyName)
-        {
-            this.SetValue(value);
         }
 
         protected abstract ReadOnlyPSNoteProperty Copy(object? clonedValue);
@@ -55,7 +59,6 @@ namespace MG.Posh.PSProperties
         {
             return this.GetValue()?.ToString() ?? string.Empty;
         }
-        protected abstract void SetValue(object? value);
     }
 }
 

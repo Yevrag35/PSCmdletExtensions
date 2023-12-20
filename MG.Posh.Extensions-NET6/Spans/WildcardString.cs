@@ -33,7 +33,7 @@ namespace MG.Posh.Extensions.Spans
         /// </summary>
         /// <param name="index">The position in the current string.</param>
         /// <returns>The char object at the specified index.</returns>
-        public char this[int index] => _pattern?[index] ?? default;
+        public char this[int index] => _pattern?[index] ?? throw new IndexOutOfRangeException();
 
         /// <summary>
         /// Indicates whether this instance contains any wildcard 
@@ -143,12 +143,12 @@ namespace MG.Posh.Extensions.Spans
         /// <inheritdoc cref="string.Equals(string?)"/>
         public bool Equals(string? value)
         {
-            return StringComparer.InvariantCultureIgnoreCase.Equals(_pattern, other);
+            return StringComparer.InvariantCultureIgnoreCase.Equals(_pattern, value);
         }
         /// <inheritdoc cref="string.Equals(string?, StringComparison)"/>
         public bool Equals(string? value, StringComparison comparisonType)
         {
-            return StringComparer.FromComparison(comparisonType).Equals(_pattern ?? string.Empty, other);
+            return StringComparer.FromComparison(comparisonType).Equals(_pattern ?? string.Empty, value);
         }
         public override bool Equals([NotNullWhen(true)] object? obj)
         {
