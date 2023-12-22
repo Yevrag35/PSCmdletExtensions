@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace UnitTesting
 {
-    public class WildcardTest
+    public class WildcardTests
     {
         const string _instTestWith = "This is a string * a known length";
         const string _instTestWithout = "This is a string that happens to have a known length";

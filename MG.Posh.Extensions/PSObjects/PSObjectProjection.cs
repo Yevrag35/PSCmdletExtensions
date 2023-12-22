@@ -38,89 +38,31 @@ namespace MG.Posh.PSObjects
         }
 
         public static PSObject ProjectTo<T, TProject>(this T obj, Expression<Func<T, TProject>> projectExpression)
+            where TProject : notnull
         {
+            var compiledExpression = projectExpression.Compile();
+            TProject result = compiledExpression(obj);
+
             var psObject = new PSObject();
-            dynamic result = null!;
-            Type? resultType = null;
-            bool resultConstructed = false;
-            Type objType = typeof(T);
+            var resultType = result.GetType();
 
-            if (projectExpression.Body is NewExpression newExpression)
+            if (!(projectExpression.Body is NewExpression newExpression))
             {
-                foreach (var member in newExpression.Members)
+                throw new ArgumentException($"Expected \"{nameof(projectExpression)}.{nameof(LambdaExpression.Body)}\" of type \"{projectExpression.Body.GetType().GetTypeName()}\" to be of type \"{typeof(NewExpression).GetTypeName()}\".");
+            }
+
+            foreach (var member in newExpression.Members)
+            {
+                var propInfo = resultType.GetProperty(member.Name);
+                if (!(propInfo is null))
                 {
-                    object? value;
-                    var directPropInfo = objType.GetProperty(member.Name);
-
-                    if (!(directPropInfo is null))
-                    {
-                        // Direct property access
-                        value = directPropInfo.GetValue(obj);
-                    }
-                    else
-                    {
-                        // Construct the anonymous object if not already done
-                        if (!resultConstructed)
-                        {
-                            var compiledExpression = projectExpression.Compile();
-                            result = compiledExpression(obj)!;
-                            resultType = result.GetType();
-                            resultConstructed = true;
-                        }
-
-                        // Use constructed anonymous object for complex transformations
-                        var resultPropInfo = resultType?.GetProperty(member.Name);
-                        value = resultPropInfo?.GetValue(result);
-                    }
-
+                    object? value = propInfo.GetValue(result);
                     psObject.Properties.Add(new PSNoteProperty(member.Name, value));
                 }
             }
 
             return psObject;
         }
-
-        //public static PSObject ProjectTo<T, TProject>(this T obj, Expression<Func<T, TProject>> projectExpression)
-        //{
-        //    var pso = new PSObject();
-
-        //    if (!(projectExpression.Body is NewExpression newExpression))
-        //    {
-        //        throw new ArgumentException($"Expected an expression body of type \"{typeof(NewExpression).GetTypeName()}\" but got \"{projectExpression.Body.GetType().GetTypeName()}\"");
-        //    }
-
-        //    var propertyAccessors = ProcessExpression<T>(newExpression);
-
-        //    foreach (var (propertyName, accessor) in propertyAccessors)
-        //    {
-        //        object? value = accessor(obj);
-        //        pso.Properties.Add(new PSNoteProperty(propertyName, value));
-        //    }
-
-        //    return pso;
-        //}
-
-        //private static IEnumerable<(string PropertyName, Func<T, object> Accessor)> ProcessExpression<T>(NewExpression newExpression)
-        //{
-        //    if (newExpression.Members.Count <= 0)
-        //    {
-        //        yield break;
-        //    }
-
-        //    var paramExpr = Expression.Parameter(typeof(T));
-
-        //    foreach (var member in newExpression.Members)
-        //    {
-        //        var property = Expression.Property(paramExpr, member.Name);
-
-        //        UnaryExpression convertedExp = Expression.Convert(property, typeof(object));
-        //        var lambda = Expression.Lambda<Func<T, object>>(convertedExp, paramExpr);
-
-        //        var compiledLambda = lambda.Compile();
-
-        //        yield return (member.Name, compiledLambda);
-        //    }
-        //}
     }
 }
 
